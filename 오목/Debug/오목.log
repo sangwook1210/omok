@@ -1,0 +1,23 @@
+﻿  소스.cpp
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(274,12): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(308,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(345,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(382,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(419,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(941,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1023,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1104,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1185,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1310,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1390,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1470,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1550,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1618,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1680,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1742,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(1804,16): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(2078,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(2134,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(2190,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\오목\소스.cpp(2246,17): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  오목.vcxproj -> C:\Users\choryun\Desktop\2020112027_박상욱_기말프로젝트\Debug\오목.exe
