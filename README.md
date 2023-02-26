@@ -8,11 +8,11 @@
 1) 게임판의 상황을 표시해주는 printGB()멤버 함수는 BOARD_SIZE가 짝수일 때와, 홀수일 때를 구분하여 크기를 알맞게 조정하여 출력한다. 빈 칸은 +로, 사용자가 둔 돌은 ●로, 컴퓨터가 둔 돌은 ○로 표기한다.
 
 2) 사람이 착수하는 player_chackshu()멤버 함수는 while(true) 안에 가로와 세로 값을 입력받고 
-`if (gameBoard[inputcol][inputrow] == "●" || gameBoard[inputcol][inputrow] == "○")
-//놀 자리에 돌이 있을 경우 continue;
-else if (inputcol >= 19 || inputcol < 0 || inputrow >= 19 || inputcol < 0)
-//입력받은 좌표가 게임판 밖일 경우 continue;
-else break;`
+if (gameBoard[inputcol][inputrow] == "●" || gameBoard[inputcol][inputrow] == "○")<br>
+//놀 자리에 돌이 있을 경우 continue;<br>
+else if (inputcol >= 19 || inputcol < 0 || inputrow >= 19 || inputcol < 0)<br>
+//입력받은 좌표가 게임판 밖일 경우 continue;<br>
+else break;<br>
 로 알맞은 좌표를 입력받을 때까지 반복한 다음 알맞은 좌표(else)가 나왔을 경우. 
 gameBoard[inputcol][inputrow] = "●";로 흑돌을 착수한다.
 
@@ -39,39 +39,39 @@ gameBoard[inputcol][inputrow] = "●";로 흑돌을 착수한다.
 
 
 i) 돌들이 가로로 나열된 경우
-`for (int i = 0; i < BOARD_SIZE; i++)<br>
+for (int i = 0; i < BOARD_SIZE; i++)<br>
 {<br>
   for (int j = 0; j < BOARD_SIZE - a; j++)<br>
 	{<br>
 	}<br>
-}`<br>
+}<br>
 의 형식으로 이중 for문을 작성한다.
 
 ii) 돌들이 세로로 나열된 경우
-`for (int i = 0; i < BOARD_SIZE - a; i++)
+for (int i = 0; i < BOARD_SIZE - a; i++)
 {
 	for (int j = 0; j < BOARD_SIZE; j++)
 	{
 	}
-}`
+}
 의 형식으로 이중 for문을 작성한다.
 
 iii) 돌들이 오른쪽 아래 대각선으로 나열된 경우
-`for (int i = 0; i < BOARD_SIZE - a; i++)
+for (int i = 0; i < BOARD_SIZE - a; i++)
 {
 	for (int j = 0; j < BOARD_SIZE - a; j++)
 	{
 	}
-}`
+}
 의 형식으로 이중 for문을 작성한다.
 
 iv) 돌들이 오른쪽 위 대각선으로 나열된 경우
-`for (int i = a; i < BOARD_SIZE; i++)
+for (int i = a; i < BOARD_SIZE; i++)
 {
 	for (int j = 0; j < BOARD_SIZE - a; j++)
 	{
 	}
-}`
+}
 의 형식으로 이중 for문을 작성한다.
 
 안의 세부적인 내용들을 간단하게 살펴보면
