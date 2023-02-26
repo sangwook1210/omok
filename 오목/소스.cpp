@@ -4,45 +4,44 @@
 #include <time.h>
 using namespace std;
 #define BOARD_SIZE 19
-/*2020112027 ¹Ú»ó¿í*/
 
-class Game_Board	//¹ÙµÏÆÇ¿¡ °ü·ÃµÈ Å¬·¡½º
+class Game_Board	//ë°”ë‘‘íŒì— ê´€ë ¨ëœ í´ë˜ìŠ¤
 {
 private:
-	int inputrow;	//ÀÔ·Â¹Ş´Â ÇàÀÇ °ª
-	int inputcol;	//ÀÔ·Â¹Ş´Â ¿­ÀÇ °ª
+	int inputrow;	//ì…ë ¥ë°›ëŠ” í–‰ì˜ ê°’
+	int inputcol;	//ì…ë ¥ë°›ëŠ” ì—´ì˜ ê°’
 public:
-	string gameBoard[BOARD_SIZE][BOARD_SIZE];	//°ÔÀÓÆÇ¿¡ Èòµ¹°ú °ËÀºµ¹À» Ç¥½ÃÇØÁÖ´Â ¹è¿­
-	int weight[BOARD_SIZE][BOARD_SIZE];			//°ÔÀÓÆÇÀÇ °¢ Ä­¿¡ °¡ÁßÄ¡¸¦ ÇÒ´çÇÏ´Â ¹è¿­
-	int saveweight[100];						//µÑ ¼ö ÀÖ´Â À§Ä¡µéÀ» ÀúÀåÇÏ´Â ¹è¿­
+	string gameBoard[BOARD_SIZE][BOARD_SIZE];	//ê²Œì„íŒì— í°ëŒê³¼ ê²€ì€ëŒì„ í‘œì‹œí•´ì£¼ëŠ” ë°°ì—´
+	int weight[BOARD_SIZE][BOARD_SIZE];			//ê²Œì„íŒì˜ ê° ì¹¸ì— ê°€ì¤‘ì¹˜ë¥¼ í• ë‹¹í•˜ëŠ” ë°°ì—´
+	int saveweight[100];						//ë‘˜ ìˆ˜ ìˆëŠ” ìœ„ì¹˜ë“¤ì„ ì €ì¥í•˜ëŠ” ë°°ì—´
 	
-	Game_Board();			//¹ÙµÏÆÇÀÇ ¸ğµç Á¡µéÀ» +·Î ÃÊ±âÈ­
+	Game_Board();			//ë°”ë‘‘íŒì˜ ëª¨ë“  ì ë“¤ì„ +ë¡œ ì´ˆê¸°í™”
 
-	void printGB();			//ÇöÀç ¹ÙµÏÆÇ¿¡ µ¹µéÀÌ ³õ¿©ÀÖ´Â »óÈ²À» Ãâ·ÂÇÏ´Â ÇÔ¼ö
-	int player_chakshu();	//»ç¿ëÀÚÀÇ Â÷·Ê¿¡ ³î Èæµ¹ÀÇ ÁÂÇ¥¸¦ ÀÔ·Â¹Ş´Â ÇÔ¼ö
-	void weighting();		//µ¹µéÀÌ ÇöÀç ³õ¿©ÀÖ´Â »óÈ²À» º¸°í Èæµ¹ ÁÖº¯ 8Á¡¿¡ +2, ¹éµ¹ ÁÖº¯ 8Á¡¿¡ -2¸¦ ÇÏ´Â ÇÔ¼ö
-	void printw();			//µ¹µéÀÌ ³õ¿© ÀÖ´Â »óÈ²ÀÇ °¡ÁßÄ¡¸¦ °¡½ÃÀûÀ¸·Î Ç¥½ÃÇØÁÖ´Â ÇÔ¼ö
-	void resetw();			//¸ğµç °¡ÁßÄ¡¸¦ 0À¸·Î ÃÊ±âÈ­ÇÏ´Â ÇÔ¼ö
-	void resets();			//¸ğµç saveweight[]¸¦ ÃÊ±âÈ­ÇÏ´Â ¹è¿­
-	int cpu_chakshu_weight();	//°¡ÁßÄ¡¸¦ ÀÌ¿ëÇÏ¿© ÄÄÇ»ÅÍ°¡ Âø¼öÇÑ´Ù.
-	int cpu_chackshu_def3s();	//»ç¿ëÀÚÀÇ µ¹ÀÌ 3°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ÀÖÀ» ¶§ ÄÄÇ»ÅÍ°¡ ¹æ¾îÇÑ´Ù.
-	int cpu_chackshu_def4s();	//»ç¿ëÀÚÀÇ µ¹ÀÌ 4°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ÀÖÀ» ¶§ ÄÄÇ»ÅÍ°¡ ¹æ¾îÇÑ´Ù.
-	int cpu_chackshu_def1_2s();	//»ç¿ëÀÚÀÇ µ¹ÀÌ 1 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ÀÖÀ» ¶§ ÄÄÇ»ÅÍ°¡ ¹æ¾îÇÑ´Ù.
-	int cpu_chackshu_def1_3s();	//»ç¿ëÀÚÀÇ µ¹ÀÌ 1 ¶ç°í 3°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ÀÖÀ» ¶§ ÄÄÇ»ÅÍ°¡ ¹æ¾îÇÑ´Ù.
-	int cpu_chackshu_def2_2s();	//»ç¿ëÀÚÀÇ µ¹ÀÌ 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ÀÖÀ» ¶§ ÄÄÇ»ÅÍ°¡ ¹æ¾îÇÑ´Ù.
-	int cpu_chackshu_atk2s();	//³ª¶õÇÑ 2°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÇ ¾ç ÂÊ ³¡¿¡ »ç¿ëÀÚÀÇ µ¹ÀÌ ¾ø°í, ¹æ¾îÇÒ ÇÊ¿ä°¡ ¾øÀ» °æ¿ì, °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk3s();	//³ª¶õÇÑ 3°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖ°í, ¹æ¾îÇÒ ÇÊ¿ä°¡ ¾øÀ» °æ¿ì, °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk4s();	//³ª¶õÇÑ 4°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖÀ» °æ¿ì °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk1_2s();	//³ª¶õÇÑ 1 ¶ç°í 2°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖ°í, ¹æ¾îÇÒ ÇÊ¿ä°¡ ¾øÀ» °æ¿ì, °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk1_3s();	//³ª¶õÇÑ 1 ¶ç°í 3°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖÀ» °æ¿ì °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk2_2s();	//³ª¶õÇÑ 2 ¶ç°í 2°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖÀ» °æ¿ì °ø°İÇÑ´Ù.
-	int cpu_chackshu_atk1_1s();	//³ª¶õÇÑ 1 ¶ç°í 1°³ÀÇ ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ÀÖ°í, ¹æ¾îÇÒ ÇÊ¿ä°¡ ¾øÀ» °æ¿ì, °ø°İÇÑ´Ù.
-	int count_cpustone();		//°ÔÀÓÆÇ¿¡¼­ ÇöÀç ÄÄÇ»ÅÍÀÇ µ¹ÀÇ °³¼ö¸¦ ¼¼´Â ÇÔ¼ö.
-	bool win_player();		//»ç¿ëÀÚÀÇ µ¹ÀÌ 5°³°¡ ³ª¶õÈ÷ ÀÖÀ¸¸é ½Â¸®ÇÑ´Ù.
-	bool win_cpu();			//ÄÄÇ»ÅÍÀÇ µ¹ÀÌ 5°³°¡ ³ª¶õÈ÷ ÀÖÀ¸¸é ½Â¸®ÇÑ´Ù.
+	void printGB();			//í˜„ì¬ ë°”ë‘‘íŒì— ëŒë“¤ì´ ë†“ì—¬ìˆëŠ” ìƒí™©ì„ ì¶œë ¥í•˜ëŠ” í•¨ìˆ˜
+	int player_chakshu();	//ì‚¬ìš©ìì˜ ì°¨ë¡€ì— ë†€ í‘ëŒì˜ ì¢Œí‘œë¥¼ ì…ë ¥ë°›ëŠ” í•¨ìˆ˜
+	void weighting();		//ëŒë“¤ì´ í˜„ì¬ ë†“ì—¬ìˆëŠ” ìƒí™©ì„ ë³´ê³  í‘ëŒ ì£¼ë³€ 8ì ì— +2, ë°±ëŒ ì£¼ë³€ 8ì ì— -2ë¥¼ í•˜ëŠ” í•¨ìˆ˜
+	void printw();			//ëŒë“¤ì´ ë†“ì—¬ ìˆëŠ” ìƒí™©ì˜ ê°€ì¤‘ì¹˜ë¥¼ ê°€ì‹œì ìœ¼ë¡œ í‘œì‹œí•´ì£¼ëŠ” í•¨ìˆ˜
+	void resetw();			//ëª¨ë“  ê°€ì¤‘ì¹˜ë¥¼ 0ìœ¼ë¡œ ì´ˆê¸°í™”í•˜ëŠ” í•¨ìˆ˜
+	void resets();			//ëª¨ë“  saveweight[]ë¥¼ ì´ˆê¸°í™”í•˜ëŠ” ë°°ì—´
+	int cpu_chakshu_weight();	//ê°€ì¤‘ì¹˜ë¥¼ ì´ìš©í•˜ì—¬ ì»´í“¨í„°ê°€ ì°©ìˆ˜í•œë‹¤.
+	int cpu_chackshu_def3s();	//ì‚¬ìš©ìì˜ ëŒì´ 3ê°œì˜ ëŒì´ ë‚˜ë€íˆ ìˆì„ ë•Œ ì»´í“¨í„°ê°€ ë°©ì–´í•œë‹¤.
+	int cpu_chackshu_def4s();	//ì‚¬ìš©ìì˜ ëŒì´ 4ê°œì˜ ëŒì´ ë‚˜ë€íˆ ìˆì„ ë•Œ ì»´í“¨í„°ê°€ ë°©ì–´í•œë‹¤.
+	int cpu_chackshu_def1_2s();	//ì‚¬ìš©ìì˜ ëŒì´ 1 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ìˆì„ ë•Œ ì»´í“¨í„°ê°€ ë°©ì–´í•œë‹¤.
+	int cpu_chackshu_def1_3s();	//ì‚¬ìš©ìì˜ ëŒì´ 1 ë„ê³  3ê°œì˜ ëŒì´ ë‚˜ë€íˆ ìˆì„ ë•Œ ì»´í“¨í„°ê°€ ë°©ì–´í•œë‹¤.
+	int cpu_chackshu_def2_2s();	//ì‚¬ìš©ìì˜ ëŒì´ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ìˆì„ ë•Œ ì»´í“¨í„°ê°€ ë°©ì–´í•œë‹¤.
+	int cpu_chackshu_atk2s();	//ë‚˜ë€í•œ 2ê°œì˜ ì»´í“¨í„°ì˜ ëŒì˜ ì–‘ ìª½ ëì— ì‚¬ìš©ìì˜ ëŒì´ ì—†ê³ , ë°©ì–´í•  í•„ìš”ê°€ ì—†ì„ ê²½ìš°, ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk3s();	//ë‚˜ë€í•œ 3ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆê³ , ë°©ì–´í•  í•„ìš”ê°€ ì—†ì„ ê²½ìš°, ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk4s();	//ë‚˜ë€í•œ 4ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆì„ ê²½ìš° ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk1_2s();	//ë‚˜ë€í•œ 1 ë„ê³  2ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆê³ , ë°©ì–´í•  í•„ìš”ê°€ ì—†ì„ ê²½ìš°, ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk1_3s();	//ë‚˜ë€í•œ 1 ë„ê³  3ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆì„ ê²½ìš° ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk2_2s();	//ë‚˜ë€í•œ 2 ë„ê³  2ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆì„ ê²½ìš° ê³µê²©í•œë‹¤.
+	int cpu_chackshu_atk1_1s();	//ë‚˜ë€í•œ 1 ë„ê³  1ê°œì˜ ì»´í“¨í„°ì˜ ëŒì´ ìˆê³ , ë°©ì–´í•  í•„ìš”ê°€ ì—†ì„ ê²½ìš°, ê³µê²©í•œë‹¤.
+	int count_cpustone();		//ê²Œì„íŒì—ì„œ í˜„ì¬ ì»´í“¨í„°ì˜ ëŒì˜ ê°œìˆ˜ë¥¼ ì„¸ëŠ” í•¨ìˆ˜.
+	bool win_player();		//ì‚¬ìš©ìì˜ ëŒì´ 5ê°œê°€ ë‚˜ë€íˆ ìˆìœ¼ë©´ ìŠ¹ë¦¬í•œë‹¤.
+	bool win_cpu();			//ì»´í“¨í„°ì˜ ëŒì´ 5ê°œê°€ ë‚˜ë€íˆ ìˆìœ¼ë©´ ìŠ¹ë¦¬í•œë‹¤.
 };
 
-Game_Board::Game_Board()	//gameBoard ¹è¿­À» +·Î ÃÊ±âÈ­
+Game_Board::Game_Board()	//gameBoard ë°°ì—´ì„ +ë¡œ ì´ˆê¸°í™”
 {
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
@@ -54,44 +53,44 @@ Game_Board::Game_Board()	//gameBoard ¹è¿­À» +·Î ÃÊ±âÈ­
 	}
 }
 
-void Game_Board::printGB()	//¹ÙµÏÆÇ Ãâ·Â
+void Game_Board::printGB()	//ë°”ë‘‘íŒ ì¶œë ¥
 {
 	cout << endl << "      ";
-	for (int i = 0; i < BOARD_SIZE; i++)	//°¡·Î ÁÂÇ¥ Ãâ·Â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ê°€ë¡œ ì¢Œí‘œ ì¶œë ¥
 	{
-		if (i < 10)		//°¡·Î ÁÂÇ¥°¡ 10º¸´Ù ÀÛÀ» °æ¿ì 0À» ºÙÀÎ´Ù.
+		if (i < 10)		//ê°€ë¡œ ì¢Œí‘œê°€ 10ë³´ë‹¤ ì‘ì„ ê²½ìš° 0ì„ ë¶™ì¸ë‹¤.
 			cout << " 0" << i;
-		else			//°¡·Î ÁÂÇ¥°¡ 10ÀÌ»óÀÏ °æ¿ì ±×³É Ãâ·ÂÇÑ´Ù.
+		else			//ê°€ë¡œ ì¢Œí‘œê°€ 10ì´ìƒì¼ ê²½ìš° ê·¸ëƒ¥ ì¶œë ¥í•œë‹¤.
 			cout << " " << i;
 	}
 	cout << endl;
 
-	if (BOARD_SIZE % 2 == 0)	//BOARD_SIZE°¡ Â¦¼ö¶ó¸é
+	if (BOARD_SIZE % 2 == 0)	//BOARD_SIZEê°€ ì§ìˆ˜ë¼ë©´
 	{
-		cout << "¤Ñ¤Ñ¤Ñ";
+		cout << "ã…¡ã…¡ã…¡";
 		for (int i = 0; i < BOARD_SIZE / 2; i++)
-			cout << "¤Ñ¤Ñ¤Ñ";
+			cout << "ã…¡ã…¡ã…¡";
 	}
-	else						//BOARD_SIZE°¡ È¦¼ö¶ó¸é
+	else						//BOARD_SIZEê°€ í™€ìˆ˜ë¼ë©´
 	{
-		cout << "¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ";
+		cout << "ã…¡ã…¡ã…¡ã…¡ã…¡";
 		for (int i = 0; i < BOARD_SIZE / 2; i++)
 		{
-			cout << "¤Ñ¤Ñ¤Ñ";
+			cout << "ã…¡ã…¡ã…¡";
 		}
 	}
 	cout << endl;
 	
-	for (int i = 0; i < BOARD_SIZE; i++)	//¼¼·Î ÁÂÇ¥ Ãâ·Â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ì„¸ë¡œ ì¢Œí‘œ ì¶œë ¥
 	{
-		if (i < 10)		//¼¼·Î ÁÂÇ¥°¡ 10º¸´Ù ÀÛÀ» °æ¿ì 0À» ºÙÀÎ´Ù.
+		if (i < 10)		//ì„¸ë¡œ ì¢Œí‘œê°€ 10ë³´ë‹¤ ì‘ì„ ê²½ìš° 0ì„ ë¶™ì¸ë‹¤.
 			cout << " 0" << i << " | ";
-		else			//¼¼·Î ÁÂÇ¥°¡ 10ÀÌ»óÀÏ °æ¿ì ±×³É Ãâ·ÂÇÑ´Ù.
+		else			//ì„¸ë¡œ ì¢Œí‘œê°€ 10ì´ìƒì¼ ê²½ìš° ê·¸ëƒ¥ ì¶œë ¥í•œë‹¤.
 			cout << " " << i << " | ";
 
-		for (int j = 0; j < BOARD_SIZE; j++)	//Èæµ¹, ¹éµ¹ Ãâ·Â
+		for (int j = 0; j < BOARD_SIZE; j++)	//í‘ëŒ, ë°±ëŒ ì¶œë ¥
 		{
-			if (gameBoard[i][j] == "¡Ü" || gameBoard[i][j] == "¡Û")
+			if (gameBoard[i][j] == "â—" || gameBoard[i][j] == "â—‹")
 				cout << " " << gameBoard[i][j];
 			else
 				cout << "  " << gameBoard[i][j];
@@ -106,19 +105,19 @@ int Game_Board::player_chakshu()
 	while (true)
 	{
 		cout << endl;
-		cout << "´ç½ÅÀÇ Â÷·ÊÀÔ´Ï´Ù." << endl;
-		cout << "Âø¼öÇÒ À§Ä¡¸¦ ¼±ÅÃÇÏ¼¼¿ä." << endl;
-		cin >> inputrow >> inputcol;	//Âø¼öÇÒ À§Ä¡(°¡·Î, ¼¼·Î)¸¦ ÀÔ·Â¹Ş´Â´Ù.
+		cout << "ë‹¹ì‹ ì˜ ì°¨ë¡€ì…ë‹ˆë‹¤." << endl;
+		cout << "ì°©ìˆ˜í•  ìœ„ì¹˜ë¥¼ ì„ íƒí•˜ì„¸ìš”." << endl;
+		cin >> inputrow >> inputcol;	//ì°©ìˆ˜í•  ìœ„ì¹˜(ê°€ë¡œ, ì„¸ë¡œ)ë¥¼ ì…ë ¥ë°›ëŠ”ë‹¤.
 
-		if (gameBoard[inputcol][inputrow] == "¡Ü" || gameBoard[inputcol][inputrow] == "¡Û")	//µ¹ÀÌ ÀÖ´Â ÀÚ¸®¿¡´Â Âø¼öÇÒ ¼ö ¾ø´Ù.
+		if (gameBoard[inputcol][inputrow] == "â—" || gameBoard[inputcol][inputrow] == "â—‹")	//ëŒì´ ìˆëŠ” ìë¦¬ì—ëŠ” ì°©ìˆ˜í•  ìˆ˜ ì—†ë‹¤.
 		{
-			cout << "±× °÷¿£ µ¹ÀÌ ÀÖ¾î Âø¼öÇÒ ¼ö ¾ø½À´Ï´Ù." << endl;
+			cout << "ê·¸ ê³³ì—” ëŒì´ ìˆì–´ ì°©ìˆ˜í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤." << endl;
 			continue;
 		}
 
-		else if (inputcol >= 19 || inputcol < 0 || inputrow >= 19 || inputcol < 0)	//°ÔÀÓÆÇÀÇ ¹Û¿¡´Â Âø¼öÇÒ ¼ö ¾ø´Ù.
+		else if (inputcol >= 19 || inputcol < 0 || inputrow >= 19 || inputcol < 0)	//ê²Œì„íŒì˜ ë°–ì—ëŠ” ì°©ìˆ˜í•  ìˆ˜ ì—†ë‹¤.
 		{
-			cout << "±× °÷Àº °ÔÀÓÆÇÀÇ ¹ÛÀÔ´Ï´Ù." << endl;
+			cout << "ê·¸ ê³³ì€ ê²Œì„íŒì˜ ë°–ì…ë‹ˆë‹¤." << endl;
 			continue;
 		}
 
@@ -128,7 +127,7 @@ int Game_Board::player_chakshu()
 		}
 	}
 
-	gameBoard[inputcol][inputrow] = "¡Ü";	//ÀÔ·Â¹ŞÀº À§Ä¡¿¡ Âø¼öÇÑ´Ù.
+	gameBoard[inputcol][inputrow] = "â—";	//ì…ë ¥ë°›ì€ ìœ„ì¹˜ì— ì°©ìˆ˜í•œë‹¤.
 	return 0;
 }
 
@@ -138,7 +137,7 @@ void Game_Board::weighting()
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü")	//»ç¿ëÀÚ°¡ Âø¼öÇÑ Á¡À» µÑ·¯½Î°í ÀÖ´Â 8Á¡¿¡ +2ÀÇ °¡ÁßÄ¡
+			if (gameBoard[i][j] == "â—")	//ì‚¬ìš©ìê°€ ì°©ìˆ˜í•œ ì ì„ ë‘˜ëŸ¬ì‹¸ê³  ìˆëŠ” 8ì ì— +2ì˜ ê°€ì¤‘ì¹˜
 			{
 				weight[i - 1][j - 1] += 2;
 				weight[i - 1][j] += 2;
@@ -150,7 +149,7 @@ void Game_Board::weighting()
 				weight[i + 1][j + 1] += 2;
 			}
 			
-			else if (gameBoard[i][j] == "¡Û")	//ÄÄÇ»ÅÍ°¡ Âø¼öÇÑ Á¡À» µÑ·¯½Î°í ÀÖ´Â 8Á¡¿¡ -2ÀÇ °¡ÁßÄ¡
+			else if (gameBoard[i][j] == "â—‹")	//ì»´í“¨í„°ê°€ ì°©ìˆ˜í•œ ì ì„ ë‘˜ëŸ¬ì‹¸ê³  ìˆëŠ” 8ì ì— -2ì˜ ê°€ì¤‘ì¹˜
 			{
 				weight[i - 1][j - 1] -= 2;
 				weight[i - 1][j] -= 2;
@@ -164,11 +163,11 @@ void Game_Board::weighting()
 		}
 	}
 
-	for (int i = 0; i < BOARD_SIZE; i++)	//µ¹ÀÌ ÀÌ¹Ì ÀÖ´Â ÀÚ¸®ÀÇ °¡ÁßÄ¡¸¦ -99·Î ¸¸µç´Ù.
+	for (int i = 0; i < BOARD_SIZE; i++)	//ëŒì´ ì´ë¯¸ ìˆëŠ” ìë¦¬ì˜ ê°€ì¤‘ì¹˜ë¥¼ -99ë¡œ ë§Œë“ ë‹¤.
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" || gameBoard[i][j] == "¡Û")
+			if (gameBoard[i][j] == "â—" || gameBoard[i][j] == "â—‹")
 			{
 				weight[i][j] = -99;
 			}
@@ -176,10 +175,10 @@ void Game_Board::weighting()
 	}
 }
 
-void Game_Board::printw()	//°¡ÁßÄ¡¸¦ °¡½ÃÀûÀ¸·Î Ãâ·Â
+void Game_Board::printw()	//ê°€ì¤‘ì¹˜ë¥¼ ê°€ì‹œì ìœ¼ë¡œ ì¶œë ¥
 {
 	cout << endl << "      ";
-	for (int i = 0; i < BOARD_SIZE; i++)	//°¡·Î ÁÂÇ¥ Ãâ·Â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ê°€ë¡œ ì¢Œí‘œ ì¶œë ¥
 	{
 		if (i < 10)
 			cout << " 0" << i;
@@ -190,21 +189,21 @@ void Game_Board::printw()	//°¡ÁßÄ¡¸¦ °¡½ÃÀûÀ¸·Î Ãâ·Â
 
 	if (BOARD_SIZE % 2 == 0)
 	{
-		cout << "¤Ñ¤Ñ¤Ñ";
+		cout << "ã…¡ã…¡ã…¡";
 		for (int i = 0; i < BOARD_SIZE / 2; i++)
-			cout << "¤Ñ¤Ñ¤Ñ";
+			cout << "ã…¡ã…¡ã…¡";
 	}
 	else
 	{
-		cout << "¤Ñ¤Ñ¤Ñ¤Ñ¤Ñ";
+		cout << "ã…¡ã…¡ã…¡ã…¡ã…¡";
 		for (int i = 0; i < BOARD_SIZE / 2; i++)
 		{
-			cout << "¤Ñ¤Ñ¤Ñ";
+			cout << "ã…¡ã…¡ã…¡";
 		}
 	}
 	cout << endl;
 
-	for (int i = 0; i < BOARD_SIZE; i++)	//¼¼·Î ÁÂÇ¥ Ãâ·Â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ì„¸ë¡œ ì¢Œí‘œ ì¶œë ¥
 	{
 		if (i < 10)
 			cout << " 0" << i << " | ";
@@ -213,13 +212,13 @@ void Game_Board::printw()	//°¡ÁßÄ¡¸¦ °¡½ÃÀûÀ¸·Î Ãâ·Â
 
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (weight[i][j] > 0)		//°¡ÁßÄ¡°¡ ¾ç¼öÀÏ °æ¿ìÀÇ °¡ÁßÄ¡ Ãâ·Â
+			if (weight[i][j] > 0)		//ê°€ì¤‘ì¹˜ê°€ ì–‘ìˆ˜ì¼ ê²½ìš°ì˜ ê°€ì¤‘ì¹˜ ì¶œë ¥
 				cout << " +" << weight[i][j];
 
-			else if (weight[i][j] == 0)	//°¡ÁßÄ¡°¡ 0ÀÏ °æ¿ìÀÇ °¡ÁßÄ¡ Ãâ·Â
+			else if (weight[i][j] == 0)	//ê°€ì¤‘ì¹˜ê°€ 0ì¼ ê²½ìš°ì˜ ê°€ì¤‘ì¹˜ ì¶œë ¥
 				cout << "  " << weight[i][j];
 
-			else if (weight[i][j] < 0)	//°¡ÁßÄ¡°¡ À½¼öÀÏ °æ¿ìÀÇ °¡ÁßÄ¡ Ãâ·Â
+			else if (weight[i][j] < 0)	//ê°€ì¤‘ì¹˜ê°€ ìŒìˆ˜ì¼ ê²½ìš°ì˜ ê°€ì¤‘ì¹˜ ì¶œë ¥
 				cout << " " << weight[i][j];
 		}
 
@@ -227,7 +226,7 @@ void Game_Board::printw()	//°¡ÁßÄ¡¸¦ °¡½ÃÀûÀ¸·Î Ãâ·Â
 	}
 }
 
-void Game_Board::resetw()	//¸ğµç °¡ÁßÄ¡¸¦ 0À¸·Î ÃÊ±âÈ­
+void Game_Board::resetw()	//ëª¨ë“  ê°€ì¤‘ì¹˜ë¥¼ 0ìœ¼ë¡œ ì´ˆê¸°í™”
 {
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
@@ -238,7 +237,7 @@ void Game_Board::resetw()	//¸ğµç °¡ÁßÄ¡¸¦ 0À¸·Î ÃÊ±âÈ­
 	}
 }
 
-void Game_Board::resets()	//¸ğµç saveweight[]¸¦ ÃÊ±âÈ­
+void Game_Board::resets()	//ëª¨ë“  saveweight[]ë¥¼ ì´ˆê¸°í™”
 {
 	for (int i = 0; i < 100; i++)
 		saveweight[i] = 0;
@@ -246,11 +245,11 @@ void Game_Board::resets()	//¸ğµç saveweight[]¸¦ ÃÊ±âÈ­
 
 int Game_Board::cpu_chakshu_weight()
 {
-	int max = weight[0][0];	//ÃÊ±âÀÇ max°ªÀ» weight[0][0]À¸·Î ¼³Á¤
-	int count = 0;			//weight°ªµé Áß °¡Àå Å« °ªÀÇ °³¼ö
+	int max = weight[0][0];	//ì´ˆê¸°ì˜ maxê°’ì„ weight[0][0]ìœ¼ë¡œ ì„¤ì •
+	int count = 0;			//weightê°’ë“¤ ì¤‘ ê°€ì¥ í° ê°’ì˜ ê°œìˆ˜
 
 	
-	for (int i = 0; i < BOARD_SIZE; i++)	//¸ğµç weight¸¦ ºñ±³ÇØ¼­ °¡Àå Å« weight°ª Ã£±â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ëª¨ë“  weightë¥¼ ë¹„êµí•´ì„œ ê°€ì¥ í° weightê°’ ì°¾ê¸°
 	{
 		for (int j = 0; j < BOARD_SIZE - 1; j++)
 		{
@@ -259,47 +258,47 @@ int Game_Board::cpu_chakshu_weight()
 		}
 	}
 
-	for (int i = 0; i < BOARD_SIZE; i++)	//°¡Àå Å« weight°ª°ú °°Àº weight°ªµéÀ» Ã£±â
+	for (int i = 0; i < BOARD_SIZE; i++)	//ê°€ì¥ í° weightê°’ê³¼ ê°™ì€ weightê°’ë“¤ì„ ì°¾ê¸°
 	{
 		for (int j = 0; j < BOARD_SIZE - 1; j++)
 		{
 			if (max == weight[i][j])
 			{
-				saveweight[count] = 100 * i + j;	//saveweight ¹è¿­¿¡ i¿Í j°ªÀ» ½ÊÀÇ ÀÚ¸®±îÁö´Â j, ¹éÀÇ ÀÚ¸®ºÎÅÍ´Â iÀÇ Çü½ÄÀ¸·Î ÀúÀåÇÑ´Ù.
-				count++;	//count°ªÀ» 1 Áõ°¡½ÃÅ²´Ù.
+				saveweight[count] = 100 * i + j;	//saveweight ë°°ì—´ì— iì™€ jê°’ì„ ì‹­ì˜ ìë¦¬ê¹Œì§€ëŠ” j, ë°±ì˜ ìë¦¬ë¶€í„°ëŠ” iì˜ í˜•ì‹ìœ¼ë¡œ ì €ì¥í•œë‹¤.
+				count++;	//countê°’ì„ 1 ì¦ê°€ì‹œí‚¨ë‹¤.
 			}
 		}
 	}
 
 	srand(time(NULL));
-	int random = rand() % count;	//0ºÎÅÍ count-1±îÁöÀÇ ¼öµé Áß ÇÏ³ª¸¦ ¹«ÀÛÀ§·Î »Ì´Â´Ù.
+	int random = rand() % count;	//0ë¶€í„° count-1ê¹Œì§€ì˜ ìˆ˜ë“¤ ì¤‘ í•˜ë‚˜ë¥¼ ë¬´ì‘ìœ„ë¡œ ë½‘ëŠ”ë‹¤.
 
-	int b = saveweight[random] % 100;			//¹«ÀÛÀ§·Î »ÌÈù j¸¦ ±¸ÇÏ°í b¿¡ ´ëÀÔÇÑ´Ù.
-	int a = (saveweight[random] - b) / 100;		//¹«ÀÛÀ§·Î »ÌÈù i¸¦ ±¸ÇÏ°í a¿¡ ´ëÀÔÇÑ´Ù.
+	int b = saveweight[random] % 100;			//ë¬´ì‘ìœ„ë¡œ ë½‘íŒ jë¥¼ êµ¬í•˜ê³  bì— ëŒ€ì…í•œë‹¤.
+	int a = (saveweight[random] - b) / 100;		//ë¬´ì‘ìœ„ë¡œ ë½‘íŒ ië¥¼ êµ¬í•˜ê³  aì— ëŒ€ì…í•œë‹¤.
 
-	gameBoard[a][b] = "¡Û";		//¡Ûµ¹·Î ÄÄÇ»ÅÍ°¡ Âø¼öÇÑ´Ù.
+	gameBoard[a][b] = "â—‹";		//â—‹ëŒë¡œ ì»´í“¨í„°ê°€ ì°©ìˆ˜í•œë‹¤.
 	return 0;
 }
 
 int Game_Board::cpu_chackshu_def3s()
 {
-	//°¡·Î·Î 3°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "â—")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
 				if (j - 1 == -1 || j + 3 == BOARD_SIZE) {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÀÌ¹Ì ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				else if (gameBoard[i][j - 1] == "¡Û" || gameBoard[i][j + 3] == "¡Û") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì´ë¯¸ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				else if (gameBoard[i][j - 1] == "â—‹" || gameBoard[i][j + 3] == "â—‹") {}
 
-				//4°³ÀÇ µ¹Àº °Ë»öÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i][j - 1] == "¡Ü" || gameBoard[i][j + 3] == "¡Ü") {}
+				//4ê°œì˜ ëŒì€ ê²€ìƒ‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i][j - 1] == "â—" || gameBoard[i][j + 3] == "â—") {}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì µÎ ³¡ Áß ÇÑ ÂÊ¿¡ ¹«ÀÛÀ§·Î Âø¼öÇÑ´Ù.
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš° ë‘ ë ì¤‘ í•œ ìª½ì— ë¬´ì‘ìœ„ë¡œ ì°©ìˆ˜í•œë‹¤.
 				else
 				{
 					saveweight[0] = 100 * i + j - 1;
@@ -310,9 +309,9 @@ int Game_Board::cpu_chackshu_def3s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					if (gameBoard[a][b] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[a][b] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 					}
 					return 0;
 				}
@@ -320,23 +319,23 @@ int Game_Board::cpu_chackshu_def3s()
 		}
 	}
 
-	//¼¼·Î·Î 3°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "â—")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
 				if (i - 1 == -1 || i + 3 == BOARD_SIZE) {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÀÌ¹Ì ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				else if (gameBoard[i - 1][j] == "¡Û" || gameBoard[i + 3][j] == "¡Û") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì´ë¯¸ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				else if (gameBoard[i - 1][j] == "â—‹" || gameBoard[i + 3][j] == "â—‹") {}
 
-				//4°³ÀÇ µ¹Àº °Ë»öÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j] == "¡Ü" || gameBoard[i + 3][j] == "¡Ü") {}
+				//4ê°œì˜ ëŒì€ ê²€ìƒ‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j] == "â—" || gameBoard[i + 3][j] == "â—") {}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì µÎ ³¡ Áß ÇÑ ÂÊ¿¡ ¹«ÀÛÀ§·Î Âø¼öÇÑ´Ù.
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš° ë‘ ë ì¤‘ í•œ ìª½ì— ë¬´ì‘ìœ„ë¡œ ì°©ìˆ˜í•œë‹¤.
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j;
@@ -347,9 +346,9 @@ int Game_Board::cpu_chackshu_def3s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					if (gameBoard[a][b] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[a][b] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 					}
 					return 0;
 				}
@@ -357,23 +356,23 @@ int Game_Board::cpu_chackshu_def3s()
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 3°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "â—")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
 				if (i - 1 == -1 || j - 1 == -1 || i + 3 == BOARD_SIZE || j + 3 == BOARD_SIZE) {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÀÌ¹Ì ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				else if (gameBoard[i - 1][j - 1] == "¡Û" || gameBoard[i + 3][j + 3] == "¡Û") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì´ë¯¸ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				else if (gameBoard[i - 1][j - 1] == "â—‹" || gameBoard[i + 3][j + 3] == "â—‹") {}
 
-				//4°³ÀÇ µ¹Àº °Ë»öÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j - 1] == "¡Ü" || gameBoard[i + 3][j + 3] == "¡Ü") {}
+				//4ê°œì˜ ëŒì€ ê²€ìƒ‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j - 1] == "â—" || gameBoard[i + 3][j + 3] == "â—") {}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì µÎ ³¡ Áß ÇÑ ÂÊ¿¡ ¹«ÀÛÀ§·Î Âø¼öÇÑ´Ù.
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš° ë‘ ë ì¤‘ í•œ ìª½ì— ë¬´ì‘ìœ„ë¡œ ì°©ìˆ˜í•œë‹¤.
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j - 1;
@@ -384,9 +383,9 @@ int Game_Board::cpu_chackshu_def3s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					if (gameBoard[a][b] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[a][b] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 					}
 					return 0;
 				}
@@ -394,23 +393,23 @@ int Game_Board::cpu_chackshu_def3s()
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 3°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 2; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "â—")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
 				if (i + 1 == BOARD_SIZE || j - 1 == -1 || i - 3 == -1 || j + 3 == BOARD_SIZE) {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÀÌ¹Ì ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				else if (gameBoard[i + 1][j - 1] == "¡Û" || gameBoard[i - 3][j + 3] == "¡Û") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì´ë¯¸ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				else if (gameBoard[i + 1][j - 1] == "â—‹" || gameBoard[i - 3][j + 3] == "â—‹") {}
 				
-				//4°³ÀÇ µ¹Àº °Ë»öÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i + 1][j - 1] == "¡Ü" || gameBoard[i - 3][j + 3] == "¡Ü") {}
+				//4ê°œì˜ ëŒì€ ê²€ìƒ‰í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i + 1][j - 1] == "â—" || gameBoard[i - 3][j + 3] == "â—") {}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì µÎ ³¡ Áß ÇÑ ÂÊ¿¡ ¹«ÀÛÀ§·Î Âø¼öÇÑ´Ù.
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš° ë‘ ë ì¤‘ í•œ ìª½ì— ë¬´ì‘ìœ„ë¡œ ì°©ìˆ˜í•œë‹¤.
 				else
 				{
 					saveweight[0] = 100 * (i + 1) + j - 1;
@@ -421,9 +420,9 @@ int Game_Board::cpu_chackshu_def3s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					if (gameBoard[a][b] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[a][b] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 					}
 					return 0;
 				}
@@ -436,45 +435,45 @@ int Game_Board::cpu_chackshu_def3s()
 
 int Game_Board::cpu_chackshu_def4s()
 {
-	//°¡·Î·Î 4°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "â—" && gameBoard[i][j + 3] == "â—")
 			{
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ º®¿¡ ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ë²½ì— ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
 				if (j - 1 == -1)
 				{
-					if (gameBoard[i][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i][j + 4] = "¡Û";
+						gameBoard[i][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 				else if (j + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
-				else if (gameBoard[i][j - 1] == "¡Û")
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
+				else if (gameBoard[i][j - 1] == "â—‹")
 				{
-					if (gameBoard[i][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i][j + 4] = "¡Û";
+						gameBoard[i][j + 4] = "â—‹";
 						return 0;
 					}
 				}
-				else if (gameBoard[i][j + 4] == "¡Û")
+				else if (gameBoard[i][j + 4] == "â—‹")
 				{
-					if (gameBoard[i][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 					}
 				}
@@ -484,45 +483,45 @@ int Game_Board::cpu_chackshu_def4s()
 		}
 	}
 
-	//¼¼·Î·Î 4°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "â—" && gameBoard[i + 3][j] == "â—")
 			{
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ º®¿¡ ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ë²½ì— ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
 				if (i - 1 == -1)
 				{
-					if (gameBoard[i + 4][j] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 4][j] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 4][j] = "¡Û";
+						gameBoard[i + 4][j] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 1][j] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 				}
 
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
-				else if (gameBoard[i - 1][j] == "¡Û")
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
+				else if (gameBoard[i - 1][j] == "â—‹")
 				{
-					if (gameBoard[i + 4][j] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 4][j] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 4][j] = "¡Û";
+						gameBoard[i + 4][j] = "â—‹";
 						return 0;
 					}
 				}
-				else if (gameBoard[i + 4][j] == "¡Û")
+				else if (gameBoard[i + 4][j] == "â—‹")
 				{
-					if (gameBoard[i - 1][j] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 1][j] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 				}
@@ -532,45 +531,45 @@ int Game_Board::cpu_chackshu_def4s()
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 4°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "â—" && gameBoard[i + 3][j + 3] == "â—")
 			{
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ º®¿¡ ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ë²½ì— ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
 				if (i - 1 == -1 || j - 1 == -1)
 				{
-					if (gameBoard[i + 4][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 4][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 4][j + 4] = "¡Û";
+						gameBoard[i + 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 4 == BOARD_SIZE || j + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 1][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
-				else if (gameBoard[i - 1][j - 1] == "¡Û")
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
+				else if (gameBoard[i - 1][j - 1] == "â—‹")
 				{
-					if (gameBoard[i + 4][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 4][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 4][j + 4] = "¡Û";
+						gameBoard[i + 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
-				else if (gameBoard[i + 4][j + 4] == "¡Û")
+				else if (gameBoard[i + 4][j + 4] == "â—‹")
 				{
-					if (gameBoard[i - 1][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 1][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
@@ -580,46 +579,46 @@ int Game_Board::cpu_chackshu_def4s()
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 4°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 3; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "â—" && gameBoard[i - 3][j + 3] == "â—")
 			{
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ º®¿¡ ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ë²½ì— ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
 				if (i + 1 == BOARD_SIZE || j - 1 == -1)
 				{
-					if (gameBoard[i - 4][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 4][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 4][j + 4] = "¡Û";
+						gameBoard[i - 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i - 4 == -1 || j + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i + 1][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 1][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//4°³ÀÇ µ¹ÀÇ ÇÑ ÂÊ ³¡ÀÌ ÄÄÇ»ÅÍÀÇ µ¹·Î ¸·Çô ÀÖ´Ù¸é ´Ù¸¥ ÇÑ ÂÊ¸¸ ¸·À¸¸é µÈ´Ù.
-				else if (gameBoard[i + 1][j - 1] == "¡Û")
+				//4ê°œì˜ ëŒì˜ í•œ ìª½ ëì´ ì»´í“¨í„°ì˜ ëŒë¡œ ë§‰í˜€ ìˆë‹¤ë©´ ë‹¤ë¥¸ í•œ ìª½ë§Œ ë§‰ìœ¼ë©´ ëœë‹¤.
+				else if (gameBoard[i + 1][j - 1] == "â—‹")
 				{
-					if (gameBoard[i - 4][j + 4] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i - 4][j + 4] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i - 4][j + 4] = "¡Û";
+						gameBoard[i - 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 
-				else if (gameBoard[i - 4][j + 4] == "¡Û")
+				else if (gameBoard[i - 4][j + 4] == "â—‹")
 				{
-					if (gameBoard[i + 1][j - 1] == "+")	//³õÀ» ÀÚ¸®°¡ ºñ¾î ÀÖ´Ù¸é Âø¼öÇÑ´Ù.
+					if (gameBoard[i + 1][j - 1] == "+")	//ë†“ì„ ìë¦¬ê°€ ë¹„ì–´ ìˆë‹¤ë©´ ì°©ìˆ˜í•œë‹¤.
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
@@ -634,31 +633,31 @@ int Game_Board::cpu_chackshu_def4s()
 
 int Game_Board::cpu_chackshu_def1_2s()
 {
-	//°¡·Î·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "â—" && gameBoard[i][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i][j - 1] == "¡Û" || gameBoard[i][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i][j - 1] == "â—‹" || gameBoard[i][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i][j + 1] = "¡Û";
+					gameBoard[i][j + 1] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i][j - 1] == "¡Û" || gameBoard[i][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i][j - 1] == "â—‹" || gameBoard[i][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i][j + 2] = "¡Û";
+					gameBoard[i][j + 2] = "â—‹";
 					return 0;
 				}
 			}
@@ -667,31 +666,31 @@ int Game_Board::cpu_chackshu_def1_2s()
 		}
 	}
 
-	//¼¼·Î·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "â—" && gameBoard[i + 3][j] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i + 1][j] == "¡Û" || gameBoard[i + 4][j] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i + 1][j] == "â—‹" || gameBoard[i + 4][j] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i + 1][j] = "¡Û";
+					gameBoard[i + 1][j] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i + 1][j] == "¡Û" || gameBoard[i + 4][j] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i + 1][j] == "â—‹" || gameBoard[i + 4][j] == "â—‹") {}
 				
 				else
 				{
-					gameBoard[i + 2][j] = "¡Û";
+					gameBoard[i + 2][j] = "â—‹";
 					return 0;
 				}
 			}
@@ -700,31 +699,31 @@ int Game_Board::cpu_chackshu_def1_2s()
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "â—" && gameBoard[i + 3][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i - 1][j - 1] == "¡Û" || gameBoard[i + 4][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i - 1][j - 1] == "â—‹" || gameBoard[i + 4][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i + 1][j + 1] = "¡Û";
+					gameBoard[i + 1][j + 1] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i - 1][j - 1] == "¡Û" || gameBoard[i + 4][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i - 1][j - 1] == "â—‹" || gameBoard[i + 4][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i + 2][j + 2] = "¡Û";
+					gameBoard[i + 2][j + 2] = "â—‹";
 					return 0;
 				}
 			}
@@ -733,31 +732,31 @@ int Game_Board::cpu_chackshu_def1_2s()
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 3; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "â—" && gameBoard[i - 3][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i + 1][j - 1] == "¡Û" || gameBoard[i - 4][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i + 1][j - 1] == "â—‹" || gameBoard[i - 4][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i - 1][j + 1] = "¡Û";
+					gameBoard[i - 1][j + 1] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "â—")
 			{
-				//¸¸¾à 1 ¶ç°í 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÏ³ª°¡ ¸·Çô ÀÖÀ¸¸é ±»ÀÌ ¸·À» ÇÊ¿ä°¡ ¾ø´Ù.
-				if (gameBoard[i + 1][j - 1] == "¡Û" || gameBoard[i - 4][j + 4] == "¡Û") {}
+				//ë§Œì•½ 1 ë„ê³  2ê°œì˜ ëŒì˜ ë ì¤‘ í•˜ë‚˜ê°€ ë§‰í˜€ ìˆìœ¼ë©´ êµ³ì´ ë§‰ì„ í•„ìš”ê°€ ì—†ë‹¤.
+				if (gameBoard[i + 1][j - 1] == "â—‹" || gameBoard[i - 4][j + 4] == "â—‹") {}
 
 				else
 				{
-					gameBoard[i - 2][j + 2] = "¡Û";
+					gameBoard[i - 2][j + 2] = "â—‹";
 					return 0;
 				}
 			}
@@ -771,78 +770,78 @@ int Game_Board::cpu_chackshu_def1_2s()
 
 int Game_Board::cpu_chackshu_def1_3s()
 {
-	//°¡·Î·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü" && gameBoard[i][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "â—" && gameBoard[i][j + 3] == "â—" && gameBoard[i][j + 4] == "â—")
 			{
-					gameBoard[i][j + 1] = "¡Û";
+					gameBoard[i][j + 1] = "â—‹";
 					return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "¡Ü" && gameBoard[i][j + 3] == "+" && gameBoard[i][j + 4] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "â—" && gameBoard[i][j + 3] == "+" && gameBoard[i][j + 4] == "â—")
 			{
 
-				gameBoard[i][j + 3] = "¡Û";
+				gameBoard[i][j + 3] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¼¼·Î·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü" && gameBoard[i + 4][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "â—" && gameBoard[i + 3][j] == "â—" && gameBoard[i + 4][j] == "â—")
 			{
-				gameBoard[i + 1][j] = "¡Û";
+				gameBoard[i + 1][j] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "¡Ü" && gameBoard[i + 3][j] == "+" && gameBoard[i + 4][j] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "â—" && gameBoard[i + 3][j] == "+" && gameBoard[i + 4][j] == "â—")
 			{
-				gameBoard[i + 3][j] = "¡Û";
+				gameBoard[i + 3][j] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü" && gameBoard[i + 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "â—" && gameBoard[i + 3][j + 3] == "â—" && gameBoard[i + 4][j + 4] == "â—")
 			{
-				gameBoard[i + 1][j + 1] = "¡Û";
+				gameBoard[i + 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "¡Ü" && gameBoard[i + 3][j + 3] == "+" && gameBoard[i + 4][j + 4] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "â—" && gameBoard[i + 3][j + 3] == "+" && gameBoard[i + 4][j + 4] == "â—")
 			{
-				gameBoard[i + 3][j + 3] = "¡Û";
+				gameBoard[i + 3][j + 3] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü" && gameBoard[i - 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "â—" && gameBoard[i - 3][j + 3] == "â—" && gameBoard[i - 4][j + 4] == "â—")
 			{
-				gameBoard[i - 1][j + 1] = "¡Û";
+				gameBoard[i - 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "¡Ü" && gameBoard[i - 3][j + 3] == "+" && gameBoard[i - 4][j + 4] == "¡Ü")
+			else if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "â—" && gameBoard[i - 3][j + 3] == "+" && gameBoard[i - 4][j + 4] == "â—")
 			{
-				gameBoard[i - 3][j + 3] = "¡Û";
+				gameBoard[i - 3][j + 3] = "â—‹";
 				return 0;
 			}
 		}
@@ -853,53 +852,53 @@ int Game_Board::cpu_chackshu_def1_3s()
 
 int Game_Board::cpu_chackshu_def2_2s()
 {
-	//°¡·Î·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "¡Ü" && gameBoard[i][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "â—" && gameBoard[i][j + 4] == "â—")
 			{
-				gameBoard[i][j + 2] = "¡Û";
+				gameBoard[i][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¼¼·Î·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "¡Ü" && gameBoard[i + 4][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "â—" && gameBoard[i + 4][j] == "â—")
 			{
-				gameBoard[i + 2][j] = "¡Û";
+				gameBoard[i + 2][j] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "¡Ü" && gameBoard[i + 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "â—" && gameBoard[i + 4][j + 4] == "â—")
 			{
-				gameBoard[i + 2][j + 2] = "¡Û";
+				gameBoard[i + 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "¡Ü" && gameBoard[i - 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "â—" && gameBoard[i - 4][j + 4] == "â—")
 			{
-				gameBoard[i - 2][j + 2] = "¡Û";
+				gameBoard[i - 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
@@ -910,29 +909,29 @@ int Game_Board::cpu_chackshu_def2_2s()
 
 int Game_Board::cpu_chackshu_atk2s()
 {
-	//°¡·Î·Î 2°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 2ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 1; j++)
 		{
-			//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
-			if (gameBoard[i][j - 1] == "+" && gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "+")
+			//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
+			if (gameBoard[i][j - 1] == "+" && gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "+")
 			{
-				//[i][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				if (weight[i][j - 1] > weight[i][j + 2])
 				{
-					gameBoard[i][j - 1] = "¡Û";
+					gameBoard[i][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//[i][j + 2]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i][j + 2]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				else if (weight[i][j - 1] < weight[i][j + 2])
 				{
-					gameBoard[i][j + 2] = "¡Û";
+					gameBoard[i][j + 2] = "â—‹";
 					return 0;
 				}
 
-				//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+				//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * i + j - 1;
@@ -943,47 +942,47 @@ int Game_Board::cpu_chackshu_atk2s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹")
 			{
-				//ÇÑ ÂÊ ³¡ÀÌ ¿­·Á ÀÖ¾î¾ß ÇÔ
+				//í•œ ìª½ ëì´ ì—´ë ¤ ìˆì–´ì•¼ í•¨
 				if (gameBoard[i][j - 1] == "+" || gameBoard[i][j + 2] == "+")
 				{
-					//¸¸¾à 2°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+					//ë§Œì•½ 2ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 					if (j - 1 == -1)
 					{
-						if (gameBoard[i][j + 2] == "¡Ü") {}
+						if (gameBoard[i][j + 2] == "â—") {}
 
 						else
 						{
-							gameBoard[i][j + 2] = "¡Û";
+							gameBoard[i][j + 2] = "â—‹";
 							return 0;
 						}
 					}
 					else if (j + 2 == BOARD_SIZE)
 					{
-						if (gameBoard[i][j - 1] == "¡Ü") {}
+						if (gameBoard[i][j - 1] == "â—") {}
 
 						else
 						{
-							gameBoard[i][j - 1] = "¡Û";
+							gameBoard[i][j - 1] = "â—‹";
 							return 0;
 						}
 					}
 
-					//¸¸¾à 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-					else if (gameBoard[i][j - 1] == "¡Ü")
+					//ë§Œì•½ 2ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+					else if (gameBoard[i][j - 1] == "â—")
 					{
-						gameBoard[i][j + 2] = "¡Û";
+						gameBoard[i][j + 2] = "â—‹";
 						return 0;
 					}
-					else if (gameBoard[i][j + 2] == "¡Ü")
+					else if (gameBoard[i][j + 2] == "â—")
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 
 					}
@@ -992,29 +991,29 @@ int Game_Board::cpu_chackshu_atk2s()
 		}
 	}
 
-	//¼¼·Î·Î 2°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 2ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 1; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
-			if (gameBoard[i - 1][j] == "+" && gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "+")
+			//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
+			if (gameBoard[i - 1][j] == "+" && gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "+")
 			{
-				//[i - 1][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i - 1][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				if (weight[i - 1][j] > weight[i + 2][j])
 				{
-					gameBoard[i - 1][j] = "¡Û";
+					gameBoard[i - 1][j] = "â—‹";
 					return 0;
 				}
 
-				//[i + 2][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i + 2][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				else if (weight[i - 1][j] < weight[i + 2][j])
 				{
-					gameBoard[i + 2][j] = "¡Û";
+					gameBoard[i + 2][j] = "â—‹";
 					return 0;
 				}
 
-				//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+				//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j;
@@ -1025,47 +1024,47 @@ int Game_Board::cpu_chackshu_atk2s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹")
 			{
-				//ÇÑ ÂÊ ³¡ÀÌ ¿­·Á ÀÖ¾î¾ß ÇÔ
+				//í•œ ìª½ ëì´ ì—´ë ¤ ìˆì–´ì•¼ í•¨
 				if (gameBoard[i - 1][j] == "+" || gameBoard[i + 2][j] == "+")
 				{
-					//¸¸¾à 2°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+					//ë§Œì•½ 2ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 					if (i - 1 == -1)
 					{
-						if (gameBoard[i + 2][j] == "¡Ü") {}
+						if (gameBoard[i + 2][j] == "â—") {}
 
 						else
 						{
-							gameBoard[i + 2][j] = "¡Û";
+							gameBoard[i + 2][j] = "â—‹";
 							return 0;
 						}
 					}
 					else if (i + 2 == BOARD_SIZE)
 					{
-						if (gameBoard[i - 1][j] == "¡Ü") {}
+						if (gameBoard[i - 1][j] == "â—") {}
 
 						else
 						{
-							gameBoard[i - 1][j] = "¡Û";
+							gameBoard[i - 1][j] = "â—‹";
 							return 0;
 						}
 					}
 
-					//¸¸¾à 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-					else if (gameBoard[i - 1][j] == "¡Ü")
+					//ë§Œì•½ 2ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+					else if (gameBoard[i - 1][j] == "â—")
 					{
-						gameBoard[i + 2][j] = "¡Û";
+						gameBoard[i + 2][j] = "â—‹";
 						return 0;
 					}
-					else if (gameBoard[i + 2][j] == "¡Ü")
+					else if (gameBoard[i + 2][j] == "â—")
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 				}
@@ -1073,29 +1072,29 @@ int Game_Board::cpu_chackshu_atk2s()
 		}
 	}
 
-	//´ë°¢¼± ¾Æ·¡·Î 2°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ì•„ë˜ë¡œ 2ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 1; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 1; j++)
 		{
-			//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
-			if (gameBoard[i - 1][j - 1] == "+" && gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "+")
+			//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
+			if (gameBoard[i - 1][j - 1] == "+" && gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "+")
 			{
-				//[i - 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i - 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				if (weight[i - 1][j - 1] > weight[i + 2][j + 2])
 				{
-					gameBoard[i - 1][j - 1] = "¡Û";
+					gameBoard[i - 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//[i + 2][j + 2]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i + 2][j + 2]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				else if (weight[i - 1][j - 1] < weight[i + 2][j + 2])
 				{
-					gameBoard[i + 2][j + 2] = "¡Û";
+					gameBoard[i + 2][j + 2] = "â—‹";
 					return 0;
 				}
 
-				//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+				//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j - 1;
@@ -1106,47 +1105,47 @@ int Game_Board::cpu_chackshu_atk2s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹")
 			{
-				//ÇÑ ÂÊ ³¡ÀÌ ¿­·Á ÀÖ¾î¾ß ÇÔ
+				//í•œ ìª½ ëì´ ì—´ë ¤ ìˆì–´ì•¼ í•¨
 				if (gameBoard[i - 1][j - 1] == "+" || gameBoard[i + 2][j + 2] == "+")
 				{
-					//¸¸¾à 2°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+					//ë§Œì•½ 2ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 					if (i - 1 == -1 || j - 1 == -1)
 					{
-						if (gameBoard[i + 2][j + 2] == "¡Ü") {}
+						if (gameBoard[i + 2][j + 2] == "â—") {}
 
 						else
 						{
-							gameBoard[i + 2][j + 2] = "¡Û";
+							gameBoard[i + 2][j + 2] = "â—‹";
 							return 0;
 						}
 					}
 					else if (i + 2 == BOARD_SIZE || j + 2 == BOARD_SIZE)
 					{
-						if (gameBoard[i - 1][j - 1] == "¡Ü") {}
+						if (gameBoard[i - 1][j - 1] == "â—") {}
 
 						else
 						{
-							gameBoard[i - 1][j - 1] = "¡Û";
+							gameBoard[i - 1][j - 1] = "â—‹";
 							return 0;
 						}
 					}
 
-					//¸¸¾à 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-					else if (gameBoard[i - 1][j - 1] == "¡Ü")
+					//ë§Œì•½ 2ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+					else if (gameBoard[i - 1][j - 1] == "â—")
 					{
-						gameBoard[i + 2][j + 2] = "¡Û";
+						gameBoard[i + 2][j + 2] = "â—‹";
 						return 0;
 					}
-					else if (gameBoard[i + 2][j + 2] == "¡Ü")
+					else if (gameBoard[i + 2][j + 2] == "â—")
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
@@ -1154,29 +1153,29 @@ int Game_Board::cpu_chackshu_atk2s()
 		}
 	}
 
-	//´ë°¢¼± À§·Î 2°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ìœ„ë¡œ 2ê°œì¼ ê²½ìš°
 	for (int i = 1; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 1; j++)
 		{
-			//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
-			if (gameBoard[i + 1][j - 1] == "+" && gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "+")
+			//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
+			if (gameBoard[i + 1][j - 1] == "+" && gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "+")
 			{
-				//[i + 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i + 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				if (weight[i + 1][j - 1] > weight[i - 2][j + 2])
 				{
-					gameBoard[i + 1][j - 1] = "¡Û";
+					gameBoard[i + 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//[i - 2][j + 2]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+				//[i - 2][j + 2]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 				else if (weight[i + 1][j - 1] < weight[i - 2][j + 2])
 				{
-					gameBoard[i - 2][j + 2] = "¡Û";
+					gameBoard[i - 2][j + 2] = "â—‹";
 					return 0;
 				}
 
-				//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+				//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i + 1) + j - 1;
@@ -1187,47 +1186,47 @@ int Game_Board::cpu_chackshu_atk2s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹")
 			{
-				//ÇÑ ÂÊ ³¡ÀÌ ¿­·Á ÀÖ¾î¾ß ÇÔ
+				//í•œ ìª½ ëì´ ì—´ë ¤ ìˆì–´ì•¼ í•¨
 				if (gameBoard[i + 1][j - 1] == "+" || gameBoard[i - 2][j + 2] == "+")
 				{
-					//¸¸¾à 2°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+					//ë§Œì•½ 2ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 					if (i - 2 == -1 || j + 2 == BOARD_SIZE)
 					{
-						if (gameBoard[i + 1][j - 1] == "¡Ü") {}
+						if (gameBoard[i + 1][j - 1] == "â—") {}
 
 						else
 						{
-							gameBoard[i + 1][j - 1] = "¡Û";
+							gameBoard[i + 1][j - 1] = "â—‹";
 							return 0;
 						}
 					}
 					else if (i + 1 == BOARD_SIZE || j - 1 == -1)
 					{
-						if (gameBoard[i - 2][j + 2] == "¡Ü") {}
+						if (gameBoard[i - 2][j + 2] == "â—") {}
 
 						else
 						{
-							gameBoard[i - 2][j + 2] = "¡Û";
+							gameBoard[i - 2][j + 2] = "â—‹";
 							return 0;
 						}
 					}
 
-					//¸¸¾à 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-					else if (gameBoard[i + 1][j - 1] == "¡Ü")
+					//ë§Œì•½ 2ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+					else if (gameBoard[i + 1][j - 1] == "â—")
 					{
-						gameBoard[i - 2][j + 2] = "¡Û";
+						gameBoard[i - 2][j + 2] = "â—‹";
 						return 0;
 					}
-					else if (gameBoard[i - 2][j + 2] == "¡Ü")
+					else if (gameBoard[i - 2][j + 2] == "â—")
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
@@ -1240,68 +1239,68 @@ int Game_Board::cpu_chackshu_atk2s()
 
 int Game_Board::cpu_chackshu_atk3s()
 {
-	//°¡·Î·Î 3°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "â—‹")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (j - 1 == -1)
 				{
-					if (gameBoard[i][j + 3] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i][j + 3] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i][j + 3] = "¡Û";
+						gameBoard[i][j + 3] = "â—‹";
 						return 0;
 					}
 				}
 				else if (j + 3 == BOARD_SIZE)
 				{
-					if (gameBoard[i][j - 1] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i][j - 1] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i][j - 1] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i][j - 1] == "â—" && gameBoard[i][j + 3] == "â—") {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i][j - 1] == "¡Ü")
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i][j - 1] == "â—")
 				{
-					gameBoard[i][j + 3] = "¡Û";
+					gameBoard[i][j + 3] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i][j + 3] == "¡Ü")
+				else if (gameBoard[i][j + 3] == "â—")
 				{
-					gameBoard[i][j - 1] = "¡Û";
+					gameBoard[i][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
-					//[i][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i][j - 1] > weight[i][j + 3])
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i][j - 1] < weight[i][j + 3])
 					{
-						gameBoard[i][j + 3] = "¡Û";
+						gameBoard[i][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * i + j - 1;
@@ -1312,7 +1311,7 @@ int Game_Board::cpu_chackshu_atk3s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
@@ -1320,68 +1319,68 @@ int Game_Board::cpu_chackshu_atk3s()
 		}
 	}
 
-	//¼¼·Î·Î 3°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "â—‹")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 1 == -1)
 				{
-					if (gameBoard[i + 3][j] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 3][j] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 3][j] = "¡Û";
+						gameBoard[i + 3][j] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 3 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 1][j] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j] == "â—" && gameBoard[i + 3][j] == "â—") {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j] == "¡Ü")
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j] == "â—")
 				{
-					gameBoard[i + 3][j] = "¡Û";
+					gameBoard[i + 3][j] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i + 3][j] == "¡Ü")
+				else if (gameBoard[i + 3][j] == "â—")
 				{
-					gameBoard[i - 1][j] = "¡Û";
+					gameBoard[i - 1][j] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
-					//[i - 1][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 1][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i - 1][j] > weight[i + 3][j])
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 
-					//[i + 3][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 3][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i - 1][j] < weight[i + 3][j])
 					{
-						gameBoard[i + 3][j] = "¡Û";
+						gameBoard[i + 3][j] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i - 1) + j;
@@ -1392,7 +1391,7 @@ int Game_Board::cpu_chackshu_atk3s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
@@ -1400,68 +1399,68 @@ int Game_Board::cpu_chackshu_atk3s()
 		}
 	}
 
-	//´ë°¢¼± ¾Æ·¡·Î 3°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ì•„ë˜ë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "â—‹")
 			{
-				//¸¸¾à 3°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 3ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 1 == -1 || j - 1 == -1)
 				{
-					if (gameBoard[i + 3][j + 3] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 3][j + 3] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 3][j + 3] = "¡Û";
+						gameBoard[i + 3][j + 3] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 3 == BOARD_SIZE || j + 3 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j - 1] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 1][j - 1] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j - 1] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j - 1] == "â—" && gameBoard[i + 3][j + 3] == "â—") {}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j - 1] == "¡Ü")
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j - 1] == "â—")
 				{
-					gameBoard[i + 3][j + 3] = "¡Û";
+					gameBoard[i + 3][j + 3] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i + 3][j + 3] == "¡Ü")
+				else if (gameBoard[i + 3][j + 3] == "â—")
 				{
-					gameBoard[i - 1][j - 1] = "¡Û";
+					gameBoard[i - 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
-					//[i - 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i - 1][j - 1] > weight[i + 3][j + 3])
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i + 3][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 3][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i - 1][j - 1] < weight[i + 3][j + 3])
 					{
-						gameBoard[i + 3][j + 3] = "¡Û";
+						gameBoard[i + 3][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i - 1) + j - 1;
@@ -1472,7 +1471,7 @@ int Game_Board::cpu_chackshu_atk3s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
@@ -1480,68 +1479,68 @@ int Game_Board::cpu_chackshu_atk3s()
 		}
 	}
 
-	//´ë°¢¼± À§·Î 3°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ìœ„ë¡œ 3ê°œì¼ ê²½ìš°
 	for (int i = 2; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "â—‹")
 			{
-				//¸¸¾à 2°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 2ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 3 == -1 || j + 3 == BOARD_SIZE)
 				{
-					if (gameBoard[i + 1][j - 1] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 1][j - 1] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 1 == BOARD_SIZE || j - 1 == -1)
 				{
-					if (gameBoard[i - 3][j + 3] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 3][j + 3] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 3][j + 3] = "¡Û";
+						gameBoard[i - 3][j + 3] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i + 1][j - 1] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i + 1][j - 1] == "â—" && gameBoard[i - 3][j + 3] == "â—") {}
 
-				//¸¸¾à 2°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i + 1][j - 1] == "¡Ü")
+				//ë§Œì•½ 2ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i + 1][j - 1] == "â—")
 				{
-					gameBoard[i - 3][j + 3] = "¡Û";
+					gameBoard[i - 3][j + 3] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i - 3][j + 3] == "¡Ü")
+				else if (gameBoard[i - 3][j + 3] == "â—")
 				{
-					gameBoard[i + 1][j - 1] = "¡Û";
+					gameBoard[i + 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
-					//[i + 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i + 1][j - 1] > weight[i - 3][j + 3])
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i - 3][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 3][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i + 1][j - 1] < weight[i - 3][j + 3])
 					{
-						gameBoard[i - 3][j + 3] = "¡Û";
+						gameBoard[i - 3][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i + 1) + j - 1;
@@ -1552,7 +1551,7 @@ int Game_Board::cpu_chackshu_atk3s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
@@ -1565,51 +1564,51 @@ int Game_Board::cpu_chackshu_atk3s()
 
 int Game_Board::cpu_chackshu_atk4s()
 {
-	//°¡·Î·Î 4°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "¡Û" && gameBoard[i][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "â—‹" && gameBoard[i][j + 3] == "â—‹")
 			{
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (j - 1 == -1)
 				{
-					if (gameBoard[i][j + 4] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i][j + 4] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i][j + 4] = "¡Û";
+						gameBoard[i][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 				else if (j - 1 == BOARD_SIZE)
 				{
-					if (gameBoard[i][j + 4] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i][j + 4] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i][j + 4] = "¡Û";
+						gameBoard[i][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i][j - 1] == "¡Ü" && gameBoard[i][j + 4] == "¡Ü") {}
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i][j - 1] == "â—" && gameBoard[i][j + 4] == "â—") {}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i][j - 1] == "¡Ü")
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i][j - 1] == "â—")
 				{
-					gameBoard[i][j + 4] = "¡Û";
+					gameBoard[i][j + 4] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i][j + 4] == "¡Ü")
+				else if (gameBoard[i][j + 4] == "â—")
 				{
-					gameBoard[i][j - 1] = "¡Û";
+					gameBoard[i][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * i + j - 1;
@@ -1620,58 +1619,58 @@ int Game_Board::cpu_chackshu_atk4s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//¼¼·Î·Î 4°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "¡Û" && gameBoard[i + 3][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "â—‹" && gameBoard[i + 3][j] == "â—‹")
 			{
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 1 == -1)
 				{
-					if (gameBoard[i + 4][j] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 4][j] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 4][j] = "¡Û";
+						gameBoard[i + 4][j] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 1][j] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j] == "¡Ü" && gameBoard[i + 4][j] == "¡Ü") {}
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j] == "â—" && gameBoard[i + 4][j] == "â—") {}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j] == "¡Ü")
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j] == "â—")
 				{
-					gameBoard[i + 4][j] = "¡Û";
+					gameBoard[i + 4][j] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i + 4][j] == "¡Ü")
+				else if (gameBoard[i + 4][j] == "â—")
 				{
-					gameBoard[i - 1][j] = "¡Û";
+					gameBoard[i - 1][j] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j;
@@ -1682,58 +1681,58 @@ int Game_Board::cpu_chackshu_atk4s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//´ë°¢¼± ¾Æ·¡·Î 4°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ì•„ë˜ë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "¡Û" && gameBoard[i + 3][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "â—‹" && gameBoard[i + 3][j + 3] == "â—‹")
 			{
-				//¸¸¾à 4°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 4ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 1 == -1 || j - 1 == -1)
 				{
-					if (gameBoard[i + 4][j + 4] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 4][j + 4] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 4][j + 4] = "¡Û";
+						gameBoard[i + 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 4 == BOARD_SIZE || j + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i - 1][j - 1] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 1][j - 1] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i - 1][j - 1] == "¡Ü" && gameBoard[i + 4][j + 4] == "¡Ü") {}
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i - 1][j - 1] == "â—" && gameBoard[i + 4][j + 4] == "â—") {}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j - 1] == "¡Ü")
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j - 1] == "â—")
 				{
-					gameBoard[i + 4][j + 4] = "¡Û";
+					gameBoard[i + 4][j + 4] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i + 4][j + 4] == "¡Ü")
+				else if (gameBoard[i + 4][j + 4] == "â—")
 				{
-					gameBoard[i - 1][j - 1] = "¡Û";
+					gameBoard[i - 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i - 1) + j - 1;
@@ -1744,58 +1743,58 @@ int Game_Board::cpu_chackshu_atk4s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//´ë°¢¼± À§·Î 4°³ÀÏ °æ¿ì
+	//ëŒ€ê°ì„  ìœ„ë¡œ 4ê°œì¼ ê²½ìš°
 	for (int i = 3; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "¡Û" && gameBoard[i - 3][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "â—‹" && gameBoard[i - 3][j + 3] == "â—‹")
 			{
-				//¸¸¾à 4°³ÀÇ µ¹ Áß ÇÑ ÂÊ ³¡ÀÌ ÆÇÀÇ ³¡¿¡ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ 4ê°œì˜ ëŒ ì¤‘ í•œ ìª½ ëì´ íŒì˜ ëì— ë§‰í˜€ ìˆì„ ê²½ìš°
 				if (i - 4 == -1 || j + 4 == BOARD_SIZE)
 				{
-					if (gameBoard[i + 1][j - 1] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i + 1][j - 1] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 				}
 				else if (i + 1 == BOARD_SIZE || j - 1 == -1)
 				{
-					if (gameBoard[i - 4][j + 4] == "¡Ü") {}	//¾ç ³¡ÀÌ ÇÏ³ª´Â º®, ÇÏ³ª´Â »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
+					if (gameBoard[i - 4][j + 4] == "â—") {}	//ì–‘ ëì´ í•˜ë‚˜ëŠ” ë²½, í•˜ë‚˜ëŠ” ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
 
 					else
 					{
-						gameBoard[i - 4][j + 4] = "¡Û";
+						gameBoard[i - 4][j + 4] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì, ¾Æ¹«°Íµµ ÇÏÁö ¾Ê´Â´Ù.
-				else if (gameBoard[i + 1][j - 1] == "¡Ü" && gameBoard[i - 4][j + 4] == "¡Ü") {}
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°, ì•„ë¬´ê²ƒë„ í•˜ì§€ ì•ŠëŠ”ë‹¤.
+				else if (gameBoard[i + 1][j - 1] == "â—" && gameBoard[i - 4][j + 4] == "â—") {}
 
-				//¸¸¾à 4°³ÀÇ µ¹ÀÇ ³¡ Áß ÇÑ ÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i + 1][j - 1] == "¡Ü")
+				//ë§Œì•½ 4ê°œì˜ ëŒì˜ ë ì¤‘ í•œ ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i + 1][j - 1] == "â—")
 				{
-					gameBoard[i - 4][j + 4] = "¡Û";
+					gameBoard[i - 4][j + 4] = "â—‹";
 					return 0;
 				}
-				else if (gameBoard[i - 4][j + 4] == "¡Ü")
+				else if (gameBoard[i - 4][j + 4] == "â—")
 				{
-					gameBoard[i + 1][j - 1] = "¡Û";
+					gameBoard[i + 1][j - 1] = "â—‹";
 					return 0;
 				}
 
-				//¸·Çô ÀÖÁö ¾ÊÀ» °æ¿ì
+				//ë§‰í˜€ ìˆì§€ ì•Šì„ ê²½ìš°
 				else
 				{
 					saveweight[0] = 100 * (i + 1) + j - 1;
@@ -1806,7 +1805,7 @@ int Game_Board::cpu_chackshu_atk4s()
 					int b = saveweight[random] % 100;
 					int a = (saveweight[random] - b) / 100;
 
-					gameBoard[a][b] = "¡Û";
+					gameBoard[a][b] = "â—‹";
 					return 0;
 				}
 			}
@@ -1818,77 +1817,77 @@ int Game_Board::cpu_chackshu_atk4s()
 
 int Game_Board::cpu_chackshu_atk1_2s()
 {
-	//°¡·Î·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "¡Û" && gameBoard[i][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "â—‹" && gameBoard[i][j + 3] == "â—‹")
 			{
-				gameBoard[i][j + 1] = "¡Û";
+				gameBoard[i][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "â—‹")
 			{
-				gameBoard[i][j + 2] = "¡Û";
+				gameBoard[i][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¼¼·Î·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "¡Û" && gameBoard[i + 3][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "â—‹" && gameBoard[i + 3][j] == "â—‹")
 			{
-				gameBoard[i + 1][j] = "¡Û";
+				gameBoard[i + 1][j] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "â—‹")
 			{
-				gameBoard[i + 2][j] = "¡Û";
+				gameBoard[i + 2][j] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 3; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "¡Û" && gameBoard[i + 3][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "â—‹" && gameBoard[i + 3][j + 3] == "â—‹")
 			{
-				gameBoard[i + 1][j + 1] = "¡Û";
+				gameBoard[i + 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "â—‹")
 			{
-				gameBoard[i + 2][j + 2] = "¡Û";
+				gameBoard[i + 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 1 ¶ç°í 2°³ÀÇ µ¹ È¤Àº 2 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  2ê°œì˜ ëŒ í˜¹ì€ 2 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 3; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 3; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "¡Û" && gameBoard[i - 3][j + 3] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "â—‹" && gameBoard[i - 3][j + 3] == "â—‹")
 			{
-				gameBoard[i - 1][j + 1] = "¡Û";
+				gameBoard[i - 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "â—‹")
 			{
-				gameBoard[i - 2][j + 2] = "¡Û";
+				gameBoard[i - 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
@@ -1899,20 +1898,20 @@ int Game_Board::cpu_chackshu_atk1_2s()
 
 int Game_Board::cpu_chackshu_atk1_3s()
 {
-	//°¡·Î·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "¡Û" && gameBoard[i][j + 3] == "¡Û" && gameBoard[i][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "+" && gameBoard[i][j + 2] == "â—‹" && gameBoard[i][j + 3] == "â—‹" && gameBoard[i][j + 4] == "â—‹")
 			{
-				gameBoard[i][j + 1] = "¡Û";
+				gameBoard[i][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "¡Û" && gameBoard[i][j + 3] == "+" && gameBoard[i][j + 4] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "â—‹" && gameBoard[i][j + 3] == "+" && gameBoard[i][j + 4] == "â—‹")
 			{
-				gameBoard[i][j + 3] = "¡Û";
+				gameBoard[i][j + 3] = "â—‹";
 				return 0;
 			}
 
@@ -1920,20 +1919,20 @@ int Game_Board::cpu_chackshu_atk1_3s()
 		}
 	}
 
-	//¼¼·Î·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "¡Û" && gameBoard[i + 3][j] == "¡Û" && gameBoard[i + 4][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "â—‹" && gameBoard[i + 3][j] == "â—‹" && gameBoard[i + 4][j] == "â—‹")
 			{
-				gameBoard[i + 1][j] = "¡Û";
+				gameBoard[i + 1][j] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "¡Û" && gameBoard[i + 3][j] == "+" && gameBoard[i + 4][j] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "â—‹" && gameBoard[i + 3][j] == "+" && gameBoard[i + 4][j] == "â—‹")
 			{
-				gameBoard[i + 3][j] = "¡Û";
+				gameBoard[i + 3][j] = "â—‹";
 				return 0;
 			}
 
@@ -1941,20 +1940,20 @@ int Game_Board::cpu_chackshu_atk1_3s()
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "¡Û" && gameBoard[i + 3][j + 3] == "¡Û" && gameBoard[i + 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "â—‹" && gameBoard[i + 3][j + 3] == "â—‹" && gameBoard[i + 4][j + 4] == "â—‹")
 			{
-				gameBoard[i + 1][j + 1] = "¡Û";
+				gameBoard[i + 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "¡Û" && gameBoard[i + 3][j + 3] == "+" && gameBoard[i + 4][j + 4] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "â—‹" && gameBoard[i + 3][j + 3] == "+" && gameBoard[i + 4][j + 4] == "â—‹")
 			{
-				gameBoard[i + 3][j + 3] = "¡Û";
+				gameBoard[i + 3][j + 3] = "â—‹";
 				return 0;
 			}
 
@@ -1962,20 +1961,20 @@ int Game_Board::cpu_chackshu_atk1_3s()
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 1 ¶ç°í 3°³ÀÇ µ¹ È¤Àº 3 ¶ç°í 1°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 1 ë„ê³  3ê°œì˜ ëŒ í˜¹ì€ 3 ë„ê³  1ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "¡Û" && gameBoard[i - 3][j + 3] == "¡Û" && gameBoard[i - 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "â—‹" && gameBoard[i - 3][j + 3] == "â—‹" && gameBoard[i - 4][j + 4] == "â—‹")
 			{
-				gameBoard[i - 1][j + 1] = "¡Û";
+				gameBoard[i - 1][j + 1] = "â—‹";
 				return 0;
 			}
 
-			else if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "¡Û" && gameBoard[i - 3][j + 3] == "+" && gameBoard[i - 4][j + 4] == "¡Û")
+			else if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "â—‹" && gameBoard[i - 3][j + 3] == "+" && gameBoard[i - 4][j + 4] == "â—‹")
 			{
-				gameBoard[i - 3][j + 3] = "¡Û";
+				gameBoard[i - 3][j + 3] = "â—‹";
 				return 0;
 			}
 
@@ -1988,53 +1987,53 @@ int Game_Board::cpu_chackshu_atk1_3s()
 
 int Game_Board::cpu_chackshu_atk2_2s()
 {
-	//°¡·Î·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ê°€ë¡œë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "¡Û" && gameBoard[i][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 3] == "â—‹" && gameBoard[i][j + 4] == "â—‹")
 			{
-				gameBoard[i][j + 2] = "¡Û";
+				gameBoard[i][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¼¼·Î·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì„¸ë¡œë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "¡Û" && gameBoard[i + 4][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "+" && gameBoard[i + 3][j] == "â—‹" && gameBoard[i + 4][j] == "â—‹")
 			{
-				gameBoard[i + 2][j] = "¡Û";
+				gameBoard[i + 2][j] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "¡Û" && gameBoard[i + 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "+" && gameBoard[i + 3][j + 3] == "â—‹" && gameBoard[i + 4][j + 4] == "â—‹")
 			{
-				gameBoard[i + 2][j + 2] = "¡Û";
+				gameBoard[i + 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 2 ¶ç°í 2°³ÀÇ µ¹ÀÌ ³ª¶õÈ÷ ³õ¿© ÀÖÀ» °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 2 ë„ê³  2ê°œì˜ ëŒì´ ë‚˜ë€íˆ ë†“ì—¬ ìˆì„ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "¡Û" && gameBoard[i - 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "+" && gameBoard[i - 3][j + 3] == "â—‹" && gameBoard[i - 4][j + 4] == "â—‹")
 			{
-				gameBoard[i - 2][j + 2] = "¡Û";
+				gameBoard[i - 2][j + 2] = "â—‹";
 				return 0;
 			}
 		}
@@ -2045,31 +2044,31 @@ int Game_Board::cpu_chackshu_atk2_2s()
 
 int Game_Board::cpu_chackshu_atk1_1s()
 {
-	//°¡·Î·Î 1 ¶ç°í 1°³ÀÏ °æ¿ì
+	//ê°€ë¡œë¡œ 1 ë„ê³  1ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 2] == "+" && gameBoard[i][j + 2] == "â—‹")
 			{
-				//+¡Û+¡Û+ÀÏ °æ¿ì, ¿À¸¥ÂÊ È¤Àº ¿ŞÂÊ +¿¡ Âø¼öÇÑ´Ù.
+				//+â—‹+â—‹+ì¼ ê²½ìš°, ì˜¤ë¥¸ìª½ í˜¹ì€ ì™¼ìª½ +ì— ì°©ìˆ˜í•œë‹¤.
 				if (gameBoard[i][j - 1] == "+" && gameBoard[i][j + 3] == "+")
 				{
-					//[i][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i][j - 1] > weight[i][j + 3])
 					{
-						gameBoard[i][j - 1] = "¡Û";
+						gameBoard[i][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i][j - 1] < weight[i][j + 3])
 					{
-						gameBoard[i][j + 3] = "¡Û";
+						gameBoard[i][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * i + j - 1;
@@ -2080,52 +2079,52 @@ int Game_Board::cpu_chackshu_atk1_1s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i][j - 1] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i][j - 1] == "â—" && gameBoard[i][j + 3] == "â—") {}
 
-				//¸¸¾à ÇÑÂÊ ³¡ÀÌ º®ÀÌ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ í•œìª½ ëì´ ë²½ì´ ë§‰í˜€ ìˆì„ ê²½ìš°
 				else if (j - 1 == -1 || j + 3 == BOARD_SIZE) {}
 
-				//¡Û+¡ÛÀÏ °æ¿ì, °¡¿îµ¥ +¿¡ Âø¼öÇÑ´Ù.
+				//â—‹+â—‹ì¼ ê²½ìš°, ê°€ìš´ë° +ì— ì°©ìˆ˜í•œë‹¤.
 				else
 				{
-					gameBoard[i][j + 1] = "¡Û";
+					gameBoard[i][j + 1] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//¼¼·Î·Î 1 ¶ç°í 1°³ÀÏ °æ¿ì
+	//ì„¸ë¡œë¡œ 1 ë„ê³  1ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "+" && gameBoard[i + 2][j] == "â—‹")
 			{
-				//+¡Û+¡Û+ÀÏ °æ¿ì, À§ È¤Àº ¾Æ·¡ +¿¡ Âø¼öÇÑ´Ù.
+				//+â—‹+â—‹+ì¼ ê²½ìš°, ìœ„ í˜¹ì€ ì•„ë˜ +ì— ì°©ìˆ˜í•œë‹¤.
 				if (gameBoard[i - 1][j] == "+" && gameBoard[i + 3][j] == "+")
 				{
-					//[i - 1][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 1][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i - 1][j] > weight[i + 3][j])
 					{
-						gameBoard[i - 1][j] = "¡Û";
+						gameBoard[i - 1][j] = "â—‹";
 						return 0;
 					}
 
-					//[i + 3][j]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 3][j]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i - 1][j] < weight[i + 3][j])
 					{
-						gameBoard[i + 3][j] = "¡Û";
+						gameBoard[i + 3][j] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i - 1) + j;
@@ -2136,52 +2135,52 @@ int Game_Board::cpu_chackshu_atk1_1s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j] == "â—" && gameBoard[i + 3][j] == "â—") {}
 
-				//¸¸¾à ÇÑÂÊ ³¡ÀÌ º®ÀÌ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ í•œìª½ ëì´ ë²½ì´ ë§‰í˜€ ìˆì„ ê²½ìš°
 				else if (i - 1 == -1 || i + 3 == BOARD_SIZE) {}
 
-				//¡Û+¡ÛÀÏ °æ¿ì, °¡¿îµ¥ +¿¡ Âø¼öÇÑ´Ù.
+				//â—‹+â—‹ì¼ ê²½ìš°, ê°€ìš´ë° +ì— ì°©ìˆ˜í•œë‹¤.
 				else
 				{
-					gameBoard[i + 1][j] = "¡Û";
+					gameBoard[i + 1][j] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡·Î 1 ¶ç°í 1°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ë¡œ 1 ë„ê³  1ê°œì¼ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 2; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "+" && gameBoard[i + 2][j + 2] == "â—‹")
 			{
-				//+¡Û+¡Û+ÀÏ °æ¿ì, ¿À¸¥ÂÊ ¾Æ·¡ È¤Àº ¿ŞÂÊ À§ +¿¡ Âø¼öÇÑ´Ù.
+				//+â—‹+â—‹+ì¼ ê²½ìš°, ì˜¤ë¥¸ìª½ ì•„ë˜ í˜¹ì€ ì™¼ìª½ ìœ„ +ì— ì°©ìˆ˜í•œë‹¤.
 				if (gameBoard[i - 1][j - 1] == "+" && gameBoard[i + 3][j + 3] == "+")
 				{
-					//[i - 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i - 1][j - 1] > weight[i + 3][j + 3])
 					{
-						gameBoard[i - 1][j - 1] = "¡Û";
+						gameBoard[i - 1][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i + 3][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 3][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i - 1][j - 1] < weight[i + 3][j + 3])
 					{
-						gameBoard[i + 3][j + 3] = "¡Û";
+						gameBoard[i + 3][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i - 1) + j - 1;
@@ -2192,52 +2191,52 @@ int Game_Board::cpu_chackshu_atk1_1s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i - 1][j - 1] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i - 1][j - 1] == "â—" && gameBoard[i + 3][j + 3] == "â—") {}
 
-				//¸¸¾à ÇÑÂÊ ³¡ÀÌ º®ÀÌ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ í•œìª½ ëì´ ë²½ì´ ë§‰í˜€ ìˆì„ ê²½ìš°
 				else if (i - 1 == -1 || j - 1 == -1 || i + 3 == BOARD_SIZE || j + 3 == BOARD_SIZE) {}
 
-				//¡Û+¡ÛÀÏ °æ¿ì, °¡¿îµ¥ +¿¡ Âø¼öÇÑ´Ù.
+				//â—‹+â—‹ì¼ ê²½ìš°, ê°€ìš´ë° +ì— ì°©ìˆ˜í•œë‹¤.
 				else
 				{
-					gameBoard[i + 1][j + 1] = "¡Û";
+					gameBoard[i + 1][j + 1] = "â—‹";
 					return 0;
 				}
 			}
 		}
 	}
 
-	//¿À¸¥ÂÊ À§·Î 1 ¶ç°í 1°³ÀÏ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ë¡œ 1 ë„ê³  1ê°œì¼ ê²½ìš°
 	for (int i = 2; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 2; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "+" && gameBoard[i - 2][j + 2] == "â—‹")
 			{
-				//+¡Û+¡Û+ÀÏ °æ¿ì, ¿À¸¥ÂÊ À§ È¤Àº ¿ŞÂÊ ¾Æ·¡ +¿¡ Âø¼öÇÑ´Ù.
+				//+â—‹+â—‹+ì¼ ê²½ìš°, ì˜¤ë¥¸ìª½ ìœ„ í˜¹ì€ ì™¼ìª½ ì•„ë˜ +ì— ì°©ìˆ˜í•œë‹¤.
 				if (gameBoard[i + 1][j - 1] == "+" && gameBoard[i - 3][j + 3] == "+")
 				{
-					//[i + 1][j - 1]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i + 1][j - 1]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					if (weight[i + 1][j - 1] > weight[i - 3][j + 3])
 					{
-						gameBoard[i + 1][j - 1] = "¡Û";
+						gameBoard[i + 1][j - 1] = "â—‹";
 						return 0;
 					}
 
-					//[i - 3][j + 3]ÀÇ °¡ÁßÄ¡°¡ ´õ Å¬ °æ¿ì
+					//[i - 3][j + 3]ì˜ ê°€ì¤‘ì¹˜ê°€ ë” í´ ê²½ìš°
 					else if (weight[i + 1][j - 1] < weight[i - 3][j + 3])
 					{
-						gameBoard[i - 3][j + 3] = "¡Û";
+						gameBoard[i - 3][j + 3] = "â—‹";
 						return 0;
 					}
 
-					//µÎ °¡ÁßÄ¡°¡ °°À» °æ¿ì
+					//ë‘ ê°€ì¤‘ì¹˜ê°€ ê°™ì„ ê²½ìš°
 					else
 					{
 						saveweight[0] = 100 * (i + 1) + j - 1;
@@ -2248,21 +2247,21 @@ int Game_Board::cpu_chackshu_atk1_1s()
 						int b = saveweight[random] % 100;
 						int a = (saveweight[random] - b) / 100;
 
-						gameBoard[a][b] = "¡Û";
+						gameBoard[a][b] = "â—‹";
 						return 0;
 					}
 				}
 
-				//¸¸¾à 3°³ÀÇ µ¹ÀÇ ¾çÂÊ ³¡ÀÌ »ç¿ëÀÚÀÇ µ¹¿¡ ÀÇÇØ ¸·Çô ÀÖÀ» °æ¿ì
-				else if (gameBoard[i + 1][j - 1] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü") {}
+				//ë§Œì•½ 3ê°œì˜ ëŒì˜ ì–‘ìª½ ëì´ ì‚¬ìš©ìì˜ ëŒì— ì˜í•´ ë§‰í˜€ ìˆì„ ê²½ìš°
+				else if (gameBoard[i + 1][j - 1] == "â—" && gameBoard[i - 3][j + 3] == "â—") {}
 
-				//¸¸¾à ÇÑÂÊ ³¡ÀÌ º®ÀÌ ¸·Çô ÀÖÀ» °æ¿ì
+				//ë§Œì•½ í•œìª½ ëì´ ë²½ì´ ë§‰í˜€ ìˆì„ ê²½ìš°
 				else if (i - 3 == -1 || j - 1 == -1 || i + 1 == BOARD_SIZE || j + 3 == BOARD_SIZE) {}
 
-				//¡Û+¡ÛÀÏ °æ¿ì, °¡¿îµ¥ +¿¡ Âø¼öÇÑ´Ù.
+				//â—‹+â—‹ì¼ ê²½ìš°, ê°€ìš´ë° +ì— ì°©ìˆ˜í•œë‹¤.
 				else
 				{
-					gameBoard[i - 1][j + 1] = "¡Û";
+					gameBoard[i - 1][j + 1] = "â—‹";
 					return 0;
 				}
 			}
@@ -2280,7 +2279,7 @@ int Game_Board::count_cpustone()
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹")
 				count++;
 		}
 	}
@@ -2290,42 +2289,42 @@ int Game_Board::count_cpustone()
 
 bool Game_Board::win_player()
 {
-	//°¡·Î·Î 5°³ÀÎ °æ¿ì
+	//ê°€ë¡œë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i][j + 1] == "¡Ü" && gameBoard[i][j + 2] == "¡Ü" && gameBoard[i][j + 3] == "¡Ü" && gameBoard[i][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i][j + 1] == "â—" && gameBoard[i][j + 2] == "â—" && gameBoard[i][j + 3] == "â—" && gameBoard[i][j + 4] == "â—")
 				return 1;
 		}
 	}
 
-	//¼¼·Î·Î 5°³ÀÎ °æ¿ì
+	//ì„¸ë¡œë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j] == "¡Ü" && gameBoard[i + 2][j] == "¡Ü" && gameBoard[i + 3][j] == "¡Ü" && gameBoard[i + 4][j] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j] == "â—" && gameBoard[i + 2][j] == "â—" && gameBoard[i + 3][j] == "â—" && gameBoard[i + 4][j] == "â—")
 				return 1;
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 5°³ÀÎ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i + 1][j + 1] == "¡Ü" && gameBoard[i + 2][j + 2] == "¡Ü" && gameBoard[i + 3][j + 3] == "¡Ü" && gameBoard[i + 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i + 1][j + 1] == "â—" && gameBoard[i + 2][j + 2] == "â—" && gameBoard[i + 3][j + 3] == "â—" && gameBoard[i + 4][j + 4] == "â—")
 				return 1;
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 5°³ÀÎ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Ü" && gameBoard[i - 1][j + 1] == "¡Ü" && gameBoard[i - 2][j + 2] == "¡Ü" && gameBoard[i - 3][j + 3] == "¡Ü" && gameBoard[i - 4][j + 4] == "¡Ü")
+			if (gameBoard[i][j] == "â—" && gameBoard[i - 1][j + 1] == "â—" && gameBoard[i - 2][j + 2] == "â—" && gameBoard[i - 3][j + 3] == "â—" && gameBoard[i - 4][j + 4] == "â—")
 				return 1;
 		}
 	}
@@ -2335,42 +2334,42 @@ bool Game_Board::win_player()
 
 bool Game_Board::win_cpu()
 {
-	//°¡·Î·Î 5°³ÀÎ °æ¿ì
+	//ê°€ë¡œë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i][j + 1] == "¡Û" && gameBoard[i][j + 2] == "¡Û" && gameBoard[i][j + 3] == "¡Û" && gameBoard[i][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i][j + 1] == "â—‹" && gameBoard[i][j + 2] == "â—‹" && gameBoard[i][j + 3] == "â—‹" && gameBoard[i][j + 4] == "â—‹")
 				return 1;
 		}
 	}
 
-	//¼¼·Î·Î 5°³ÀÎ °æ¿ì
+	//ì„¸ë¡œë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j] == "¡Û" && gameBoard[i + 2][j] == "¡Û" && gameBoard[i + 3][j] == "¡Û" && gameBoard[i + 4][j] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j] == "â—‹" && gameBoard[i + 2][j] == "â—‹" && gameBoard[i + 3][j] == "â—‹" && gameBoard[i + 4][j] == "â—‹")
 				return 1;
 		}
 	}
 
-	//¿À¸¥ÂÊ ¾Æ·¡ ´ë°¢¼±À¸·Î 5°³ÀÎ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ì•„ë˜ ëŒ€ê°ì„ ìœ¼ë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 0; i < BOARD_SIZE - 4; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i + 1][j + 1] == "¡Û" && gameBoard[i + 2][j + 2] == "¡Û" && gameBoard[i + 3][j + 3] == "¡Û" && gameBoard[i + 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i + 1][j + 1] == "â—‹" && gameBoard[i + 2][j + 2] == "â—‹" && gameBoard[i + 3][j + 3] == "â—‹" && gameBoard[i + 4][j + 4] == "â—‹")
 				return 1;
 		}
 	}
 
-	//¿À¸¥ÂÊ À§ ´ë°¢¼±À¸·Î 5°³ÀÎ °æ¿ì
+	//ì˜¤ë¥¸ìª½ ìœ„ ëŒ€ê°ì„ ìœ¼ë¡œ 5ê°œì¸ ê²½ìš°
 	for (int i = 4; i < BOARD_SIZE; i++)
 	{
 		for (int j = 0; j < BOARD_SIZE - 4; j++)
 		{
-			if (gameBoard[i][j] == "¡Û" && gameBoard[i - 1][j + 1] == "¡Û" && gameBoard[i - 2][j + 2] == "¡Û" && gameBoard[i - 3][j + 3] == "¡Û" && gameBoard[i - 4][j + 4] == "¡Û")
+			if (gameBoard[i][j] == "â—‹" && gameBoard[i - 1][j + 1] == "â—‹" && gameBoard[i - 2][j + 2] == "â—‹" && gameBoard[i - 3][j + 3] == "â—‹" && gameBoard[i - 4][j + 4] == "â—‹")
 				return 1;
 		}
 	}
@@ -2382,32 +2381,32 @@ int main()
 {
 	Game_Board omok;
 
-	int count_playerstone = 0;	//»ç¿ëÀÚÀÇ µ¹ÀÇ °³¼ö
+	int count_playerstone = 0;	//ì‚¬ìš©ìì˜ ëŒì˜ ê°œìˆ˜
 
 	while (true)
 	{
-		omok.printGB();		//°ÔÀÓÆÇÀ» Ç¥½Ã
-		omok.resetw();		//°¡ÁßÄ¡ ÃÊ±âÈ­
-		omok.resets();		//saveweight[]ÃÊ±âÈ­
+		omok.printGB();		//ê²Œì„íŒì„ í‘œì‹œ
+		omok.resetw();		//ê°€ì¤‘ì¹˜ ì´ˆê¸°í™”
+		omok.resets();		//saveweight[]ì´ˆê¸°í™”
 
-		if (omok.win_cpu() == 1)	//ÄÄÇ»ÅÍÀÇ µ¹ÀÌ ¿À¸ñ ÀÌ»óÀÌ¶ó¸é
+		if (omok.win_cpu() == 1)	//ì»´í“¨í„°ì˜ ëŒì´ ì˜¤ëª© ì´ìƒì´ë¼ë©´
 		{
-			cout << endl << "´ç½ÅÀÇ ÆĞ¹èÀÔ´Ï´Ù." << endl;
+			cout << endl << "ë‹¹ì‹ ì˜ íŒ¨ë°°ì…ë‹ˆë‹¤." << endl;
 			break;
 		}
 
-		omok.player_chakshu();	//»ç¿ëÀÚ Âø¼ö
-		count_playerstone++;	//»ç¿ëÀÚÀÇ µ¹ °³¼ö Áõ°¡
-		omok.weighting();		//°¡ÁßÄ¡ ºÎ¿©
+		omok.player_chakshu();	//ì‚¬ìš©ì ì°©ìˆ˜
+		count_playerstone++;	//ì‚¬ìš©ìì˜ ëŒ ê°œìˆ˜ ì¦ê°€
+		omok.weighting();		//ê°€ì¤‘ì¹˜ ë¶€ì—¬
 
-		if (omok.win_player() == 1)	//»ç¿ëÀÚÀÇ µ¹ÀÌ ¿À¸ñ ÀÌ»óÀÌ¶ó¸é
+		if (omok.win_player() == 1)	//ì‚¬ìš©ìì˜ ëŒì´ ì˜¤ëª© ì´ìƒì´ë¼ë©´
 		{
 			omok.printGB();
-			cout << endl << "ÃàÇÏÇÕ´Ï´Ù!" << endl << "´ç½ÅÀÇ ½Â¸®ÀÔ´Ï´Ù." << endl;
+			cout << endl << "ì¶•í•˜í•©ë‹ˆë‹¤!" << endl << "ë‹¹ì‹ ì˜ ìŠ¹ë¦¬ì…ë‹ˆë‹¤." << endl;
 			break;
 		}
 
-		//ÀÚ±â Â÷·Ê¿¡ ÀÚ½ÅÀÇ µ¹ÀÌ 5°³°¡ µÈ´Ù¸é °ø°İÇÑ´Ù.
+		//ìê¸° ì°¨ë¡€ì— ìì‹ ì˜ ëŒì´ 5ê°œê°€ ëœë‹¤ë©´ ê³µê²©í•œë‹¤.
 		omok.cpu_chackshu_atk1_3s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
@@ -2418,7 +2417,7 @@ int main()
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//´ÙÀ½ Â÷·Ê¿¡ »ó´ë°¡ 5°³°¡ µÇ¸é ¸·´Â´Ù.
+		//ë‹¤ìŒ ì°¨ë¡€ì— ìƒëŒ€ê°€ 5ê°œê°€ ë˜ë©´ ë§‰ëŠ”ë‹¤.
 		omok.cpu_chackshu_def4s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
@@ -2429,12 +2428,12 @@ int main()
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//´ÙÀ½ Â÷·Ê¿¡ »ó´ë°¡ 4°³°¡ µÇ¸é ¸·´Â´Ù.
+		//ë‹¤ìŒ ì°¨ë¡€ì— ìƒëŒ€ê°€ 4ê°œê°€ ë˜ë©´ ë§‰ëŠ”ë‹¤.
 		omok.cpu_chackshu_def1_2s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//ÀÚ±â Â÷·Ê¿¡ ÀÚ½ÅÀÇ µ¹ÀÌ 4°³°¡ µÈ´Ù¸é °ø°İÇÑ´Ù.
+		//ìê¸° ì°¨ë¡€ì— ìì‹ ì˜ ëŒì´ 4ê°œê°€ ëœë‹¤ë©´ ê³µê²©í•œë‹¤.
 		omok.cpu_chackshu_atk1_2s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
@@ -2442,12 +2441,12 @@ int main()
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//¾ç ÂÊ ³¡ÀÌ ¿­¸° 3¸ñÀÌ ÀÖÀ¸¸é ¸·´Â´Ù.
+		//ì–‘ ìª½ ëì´ ì—´ë¦° 3ëª©ì´ ìˆìœ¼ë©´ ë§‰ëŠ”ë‹¤.
 		omok.cpu_chackshu_def3s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//¹æ¾îÇÒ °ÍÀÌ ¾ø´Ù¸é 2°³ÀÇ µ¹À» 3°³·Î ¸¸µé¾î °ø°İÇÑ´Ù.
+		//ë°©ì–´í•  ê²ƒì´ ì—†ë‹¤ë©´ 2ê°œì˜ ëŒì„ 3ê°œë¡œ ë§Œë“¤ì–´ ê³µê²©í•œë‹¤.
 		omok.cpu_chackshu_atk1_1s();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
@@ -2455,7 +2454,7 @@ int main()
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
 
-		//À§ÀÇ ÇØ´ç»çÇ×ÀÌ ¾ø´Ù¸é °¡ÁßÄ¡¿¡ ÀÇÇØ Âø¼öÇÑ´Ù.
+		//ìœ„ì˜ í•´ë‹¹ì‚¬í•­ì´ ì—†ë‹¤ë©´ ê°€ì¤‘ì¹˜ì— ì˜í•´ ì°©ìˆ˜í•œë‹¤.
 		omok.cpu_chakshu_weight();
 		if (omok.count_cpustone() == count_playerstone)
 			continue;
