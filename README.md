@@ -39,12 +39,12 @@ cpu_chackshu_atk~()는 컴퓨터가 방어할 필요가 없을 경우, ~의 상�
 
 
 i) 돌들이 가로로 나열된 경우
-for (int i = 0; i < BOARD_SIZE; i++)
+`for (int i = 0; i < BOARD_SIZE; i++)
 {
   for (int j = 0; j < BOARD_SIZE - a; j++)
 	{
 	}
-}
+}`
 의 형식으로 이중 for문을 작성한다.
 
 ii) 돌들이 세로로 나열된 경우
