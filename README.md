@@ -164,3 +164,29 @@ cpu_chakshu_weight();<br>
 6) 5)에서 컴퓨터가 착수하고 win_cpu()함수에서 ○가 연속으로 5개 이상이 되는지 확인한다. 만약 그렇다면 1을 return하고 문구를 출력한 후 프로그램이 종료된다.<br><br>
 
 7) 그렇지 않다면 continue;한다.<br><br>
+
+<img width="800" alt="1" src="https://user-images.githubusercontent.com/112921582/221410086-3bcaf024-04cc-4f92-a12b-763d519584e8.png"><br><br>
+여기서 int count_playerstone=0;는 현재 판에 놓인 사용자의 돌의 개수를 말한다. 초기에는 0이고 플레어가 착수한 후, 1씩 증가한다.<br>
+if (omok.count_cpustone() == count_playerstone)<br>
+	continue;<br>
+위의 코드가 5)에서 말했던 예외들의 순서 밑에 하나도 빠짐없이 붙어있다. 위의 코드를 살펴보자면, count_cpustone()이라는 함수는 현재 판에 놓인 컴퓨터의 돌의 개수세는 함수이다. 예를 들어 제일 위에 있는 코드인 omok.cpu_chackshu_atk1_3s();에서 착수를 했다면, count_cpustone()이 1 증가하고, count_playerstone과 같아져 continue;에 의해 함수의 처음으로 돌아간다. 컴퓨터가 자신의 차례에 돌을 1개 이상 두지 않게 하기 위해 걸어둔 제약이다.<br>
+
+● 결과 / 결과 분석
+
+<img width="1920" alt="2" src="https://user-images.githubusercontent.com/112921582/221410437-98d10dc7-3d6f-49da-8cab-68567b1d6014.png"><br>
+위의 사진을 통해 3목을 막는 것을 확인할 수 있다.<br><br>
+
+<img width="1920" alt="3" src="https://user-images.githubusercontent.com/112921582/221410449-08b6ba20-f24c-41e9-9348-4875db33932c.png"><br>
+위의 사진을 통해 4목을 막는 것을 확인할 수 있다.<br><br>
+
+<img width="1920" alt="4" src="https://user-images.githubusercontent.com/112921582/221410461-149d5d74-ed20-4f77-b3e4-8b22061c612a.png"><br>
+위의 사진을 통해 굳이 막을 것이 없다면 공격하는 모습을 확인할 수 있다.<br><br>
+
+<img width="1920" alt="5" src="https://user-images.githubusercontent.com/112921582/221410483-db829bc8-e679-45bc-8694-8c4c558848ca.png"><br>
+위의 사진을 통해 공격을 계속해서 이어나가는 것을 확인할 수 있다.<br><br>
+
+<img width="1920" alt="6" src="https://user-images.githubusercontent.com/112921582/221410500-5d056d97-db08-42bf-9c4c-a9a1826b26b5.png"><br>
+위의 사진을 통해 2 띄고 1개의 돌을 막는 모습을 볼 수 있다.<br><br>
+
+<img width="1920" alt="7" src="https://user-images.githubusercontent.com/112921582/221410509-34375620-e7f7-4a49-a07e-d57480c55cf3.png"><br>
+위의 사진을 통해 상대방의 4목을 막는 것보다 5목 완성을 통해 자신의 승리를 우선시하는 모습을 확인할 수 있다.<br><br>
