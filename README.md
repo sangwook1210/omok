@@ -38,7 +38,7 @@ gameBoard[inputcol][inputrow] = "●";로 흑돌을 착수한다.
 
 
 
-i) 돌들이 가로로 나열된 경우
+i) 돌들이 가로로 나열된 경우<br>
 for (int i = 0; i < BOARD_SIZE; i++)<br>
 {<br>
   for (int j = 0; j < BOARD_SIZE - a; j++)<br>
@@ -47,31 +47,31 @@ for (int i = 0; i < BOARD_SIZE; i++)<br>
 }<br>
 의 형식으로 이중 for문을 작성한다.
 
-ii) 돌들이 세로로 나열된 경우
-for (int i = 0; i < BOARD_SIZE - a; i++)
-{
-	for (int j = 0; j < BOARD_SIZE; j++)
-	{
-	}
-}
+ii) 돌들이 세로로 나열된 경우<br>
+for (int i = 0; i < BOARD_SIZE - a; i++)<br>
+{<br>
+	for (int j = 0; j < BOARD_SIZE; j++)<br>
+	{<br>
+	}<br>
+}<br>
 의 형식으로 이중 for문을 작성한다.
 
-iii) 돌들이 오른쪽 아래 대각선으로 나열된 경우
-for (int i = 0; i < BOARD_SIZE - a; i++)
-{
-	for (int j = 0; j < BOARD_SIZE - a; j++)
-	{
-	}
-}
+iii) 돌들이 오른쪽 아래 대각선으로 나열된 경우<br>
+for (int i = 0; i < BOARD_SIZE - a; i++)<br>
+{<br>
+	for (int j = 0; j < BOARD_SIZE - a; j++)<br>
+	{<br>
+	}<br>
+}<br>
 의 형식으로 이중 for문을 작성한다.
 
-iv) 돌들이 오른쪽 위 대각선으로 나열된 경우
-for (int i = a; i < BOARD_SIZE; i++)
-{
-	for (int j = 0; j < BOARD_SIZE - a; j++)
-	{
-	}
-}
+iv) 돌들이 오른쪽 위 대각선으로 나열된 경우<br>
+for (int i = a; i < BOARD_SIZE; i++)<br>
+{<br>
+	for (int j = 0; j < BOARD_SIZE - a; j++)<br>
+	{<br>
+	}<br>
+}<br>
 의 형식으로 이중 for문을 작성한다.
 
 안의 세부적인 내용들을 간단하게 살펴보면
@@ -92,3 +92,75 @@ def1_2s는 만약 1 띄고 2개의 돌의 끝 중 하나가 막혀 있으면 굳
 그리고 모든 cpu_chackshu들은 int 함수로 돌을 착수한 순간 return 0;로 함수를 끝내도록 설계되어 있다.
 
 이 외의 def와 atk들의 상세한 로직은 소스코드의 주석에 적혀 있다.
+
+이제 가중치에 의해 착수하는 chackshu_weight()에 대하여 알아보자. 
+초기의 max값을 weight[0][0]로 선언한다.
+count=0이다.<br><br>
+
+for (int i = 0; i < BOARD_SIZE; i++)<br>
+{<br>
+	for (int j = 0; j < BOARD_SIZE - 1; j++)<br>
+	{<br>
+	if (max < weight[i][j + 1])<br>
+		max = weight[i][j + 1];<br>
+	}<br>
+}<br>
+의 이중 for문으로 모든 weight값들을 비교하여 가중치들 중 가장 큰 값이 max가 되도록 한다.<br>
+
+for (int i = 0; i < BOARD_SIZE; i++)<br>
+{<br>
+	for (int j = 0; j < BOARD_SIZE - 1; j++)<br>
+	{<br>
+		if (max == weight[i][j])<br>
+		{<br>
+			saveweight[count] = 100 * i + j;	<br>
+			count++;	<br>
+		}<br>
+	}	<br>
+}<br>
+이중 for문을 돌린다. 만약 max값과 weight[i][j]값이 같다면, int saveweight[count] 배열에 i와 j를 천과 백의 자리는 i, 십과 일의 자리는 j의 네자리 수의 형식으로 저장한다. 그리고 count++로 saveweight[]의 다음 칸에 다음 weight[i][j]가 저장될 수 있도록 한다.
+이제 count의 개수가 가장 큰 가중치들의 개수이다. <br>
+
+srand(time(NULL));
+int random=rand()%count;
+로 0에서부터 count-1 중 하나를 랜덤으로 뽑는다.
+
+int b = saveweight[random] % 100;
+int a = (saveweight[random] - b) / 100;	
+로 합체해놨던 가중치의 좌표를 다시 분해해
+gameBoard[a][b] = "○";
+로 그곳에 착수한다.
+
+위에서 말한 무작위로 두는 방법은 위의 과정에서 saveweight[count]가 saveweight[0] 과 saveweight[1]로 바뀌고 양 쪽 끝 중 하나에 무작위로 두면 되므로 2로 나눈 나머지를 rand()%2; 로 구한 것이다.
+
+그리고 마지막으로 위 예외들의 우선순위는
+cpu_chackshu_atk1_3s();
+cpu_chackshu_atk2_2s();
+cpu_chackshu_atk4s();
+자기 차례에 자신의 돌이 5개가 된다면 공격하고
+
+cpu_chackshu_def4s();
+cpu_chackshu_def1_3s();
+cpu_chackshu_def2_2s();
+다음 차례에 상대가 5개가 되면 막고
+
+cpu_chackshu_def1_2s();
+다음 차례에 상대가 4개가 되면 막는다.
+
+cpu_chackshu_atk1_2s();
+cpu_chackshu_atk3s();
+자기 차례에 자신의 돌이 4개가 된다면 공격하고
+
+cpu_chackshu_def3s();
+양 쪽 끝이 열린 3목이 있으면 막고
+
+cpu_chackshu_atk1_1s();
+cpu_chackshu_atk2s();
+방어할 게 없다면 2개의 돌을 3개로 만들어 공격하고
+
+cpu_chakshu_weight();
+그것도 없다면 가중치에 의해 착수한다.
+
+6) 5)에서 컴퓨터가 착수하고 win_cpu()함수에서 ○가 연속으로 5개 이상이 되는지 확인한다. 만약 그렇다면 1을 return하고 문구를 출력한 후 프로그램이 종료된다.
+
+7) 그렇지 않다면 continue;한다.
